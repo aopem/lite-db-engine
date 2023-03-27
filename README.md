@@ -1,4 +1,4 @@
-# db-engine-lit
+# db-engine-lite
 
 ```sh
 brew install boost
