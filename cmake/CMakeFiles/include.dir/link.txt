@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libinclude.a CMakeFiles/include.dir/include/query/language_element.cpp.o CMakeFiles/include.dir/include/query/lexer.cpp.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libinclude.a
