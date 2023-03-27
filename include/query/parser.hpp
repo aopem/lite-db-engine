@@ -2,7 +2,7 @@
 #define __PARSER_HPP__
 
 #include "ast_nodes/ast_nodes.hpp"
-#include "ast_nodes/builders.hpp"
+#include "builders/builders.hpp"
 #include "lexer.hpp"
 #include "symbol.hpp"
 
@@ -24,6 +24,7 @@ namespace engine::query
 
             void RegisterBuilders();
             std::shared_ptr<AstNode> ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
+            std::shared_ptr<AstNode> ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
     };
 };

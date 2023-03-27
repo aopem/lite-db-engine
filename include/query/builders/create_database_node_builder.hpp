@@ -2,7 +2,6 @@
 #define __CREATE_DATABASE_NODE_BUILDER_HPP__
 
 #include "node_builder.hpp"
-#include "create_database_node.hpp"
 
 namespace engine::query
 {

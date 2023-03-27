@@ -3,12 +3,17 @@
 
 #include "ast_node.hpp"
 
+#include <string>
+#include <vector>
+
 namespace engine::query
 {
     class CreateTableNode : public AstNode
     {
         public:
-            CreateTableNode();
+            std::string database;
+            std::string table;
+            std::vector<std::pair<std::string, std::string>> columns;
     };
 };
 

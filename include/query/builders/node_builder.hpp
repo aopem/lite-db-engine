@@ -1,7 +1,7 @@
 #ifndef __NODE_BUILDER_HPP__
 #define __NODE_BUILDER_HPP__
 
-#include "ast_node.hpp"
+#include "../ast_nodes/ast_nodes.hpp"
 
 #include <memory>
 

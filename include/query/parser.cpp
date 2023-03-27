@@ -21,6 +21,10 @@ namespace engine::query
                 node = ParseCreateDatabase(lexer, builder);
                 break;
 
+            case symbol_e::KEYWORD_CREATE_TABLE:
+                node = ParseCreateTable(lexer, builder);
+                break;
+
             case symbol_e::KEYWORD_SELECT:
                 node = ParseSelect(lexer, builder);
                 break;
@@ -47,6 +51,22 @@ namespace engine::query
 
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder_ptr)
+    {
+        auto builder = static_cast<CreateTableNodeBuilder*>(builder_ptr.get());
+
+        if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
+        {
+            auto error_msg = "Expected table identifier, got '" + lexer.Peek()->GetValue() + "' instead";
+            BOOST_LOG_TRIVIAL(error) << error_msg;
+            throw std::invalid_argument(error_msg);
+        }
+
+        // TODO: add logic for parsing columns of CREATE TABLE statement
 
         return builder->Build();
     }

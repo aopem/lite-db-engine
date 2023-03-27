@@ -2,7 +2,6 @@
 #define __SELECT_NODE_BUILDER_HPP__
 
 #include "node_builder.hpp"
-#include "select_node.hpp"
 
 namespace engine::query
 {
