@@ -21,7 +21,7 @@ namespace engine::query
                 // if not a type derived from NodeBuilder, cannot register
                 if (!std::is_base_of<NodeBuilder, T>::value)
                 {
-                    auto error_msg = "NodeBuilderFactor cannot register type";// '" + type + "', which is not derived from NodeBuilder";
+                    auto error_msg = "NodeBuilderFactor cannot register type '" + symbol_e_map[type] + "', which is not derived from NodeBuilder";
                     BOOST_LOG_TRIVIAL(error) << error_msg;
                     return;
                 }
@@ -33,7 +33,7 @@ namespace engine::query
             {
                 if (_builder_map.find(type) == _builder_map.end())
                 {
-                    auto error_msg = "NodeBuilderFactory does not have builder of type";// '" + type + "'";
+                    auto error_msg = "NodeBuilderFactory does not have builder of type '" + symbol_e_map[type] + "'";
                     BOOST_LOG_TRIVIAL(error) << error_msg;
                     throw std::runtime_error(error_msg);
                 }
