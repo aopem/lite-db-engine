@@ -22,7 +22,7 @@ namespace engine::query
         throw std::exception();
     }
 
-    std::pair<std::string, data_type_t> Parser::ParseDataType(Lexer& lexer, CreateTableNodeBuilder* builder)
+    data_type_t Parser::ParseDataType(Lexer& lexer, CreateTableNodeBuilder* builder)
     {
         auto token = lexer.GetNextToken();
         data_type_t data_type;
@@ -40,7 +40,11 @@ namespace engine::query
 
             case symbol_e::DATA_TYPE_CHAR:
                 data_type.type = data_type_e::CHAR;
-                data_type.length = token->GetValue().size();
+
+                // get left paren, read length, then read right paren
+                lexer.GetNextToken();
+                data_type.length = stoi(lexer.GetNextToken()->GetValue());
+                lexer.GetNextToken();
                 break;
 
             default:
@@ -48,7 +52,7 @@ namespace engine::query
                 break;
         }
 
-        return { token->GetValue(), data_type };
+        return data_type;
     }
 
     std::shared_ptr<AstNode> Parser::Parse(Lexer& lexer)
@@ -122,18 +126,38 @@ namespace engine::query
         while (lexer.Peek()->GetType() == symbol_e::IDENTIFIER ||
                lexer.Peek()->IsDataType())
         {
+            // read identifier
             if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
             {
                 ThrowParserError("column identifier", lexer.Peek()->GetValue());
             }
             auto column = lexer.GetNextToken()->GetValue();
 
+            // read data type
             if (!lexer.Peek()->IsDataType())
             {
                 ThrowParserError("column data type", lexer.Peek()->GetValue());
             }
             auto data_type = ParseDataType(lexer, builder);
+
+            // add column to create table node
+            builder->AddColumn({ column, data_type });
+
+            // read comma before next column type/closing right paren
+            if (lexer.Peek()->GetType() != symbol_e::PUNCTUATOR_COMMA &&
+                lexer.Peek()->GetType() != symbol_e::PUNCTUATOR_RPAREN)
+            {
+                ThrowParserError(", or )", lexer.Peek()->GetValue());
+            }
+            lexer.GetNextToken();
         }
+
+        // read final semicolon
+        if (lexer.Peek()->GetType() != symbol_e::PUNCTUATOR_SEMICOLON)
+        {
+            ThrowParserError(";", lexer.Peek()->GetValue());
+        }
+        lexer.GetNextToken();
 
         return builder->Build();
     }

@@ -17,9 +17,9 @@ int main()
         "SELECT * FROM table",
         "CREATE   TABLE new_table ( \
             col1 int,               \
-            col2 char(8),           \
-            col3 float,             \
-            col4 char(4)            \
+            test char(8),           \
+            myFloat float,          \
+            apples char(4)          \
         );"
     };
 
@@ -42,5 +42,12 @@ int main()
     Lexer select_lexer(statements[2]);
     auto select_node = parser.Parse(select_lexer);
     BOOST_LOG_TRIVIAL(info) << "Table: " << static_cast<SelectNode*>(select_node.get())->table;
+
+    Lexer create_table_lexer(statements[3]);
+    auto create_table_node = parser.Parse(create_table_lexer);
+    for (auto& [col, data_type] : static_cast<CreateTableNode*>(create_table_node.get())->columns)
+    {
+        BOOST_LOG_TRIVIAL(info) << "Column: " << col << ", Data type: " << static_cast<int>(data_type.type) << ", Length: " << std::to_string(data_type.length);
+    }
     return 0;
 }

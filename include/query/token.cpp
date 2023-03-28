@@ -10,14 +10,14 @@ namespace engine::query
 
     bool Token::IsLiteral()
     {
-        return _symbol_t >= symbol_e::DATA_TYPE_INT &&
-            _symbol_t <= symbol_e::DATA_TYPE_CHAR;
+        return _symbol_t >= symbol_e::LITERAL_INT &&
+            _symbol_t <= symbol_e::LITERAL_STRING;
     }
 
     bool Token::IsDataType()
     {
-        return _symbol_t >= symbol_e::LITERAL_INT &&
-            _symbol_t <= symbol_e::LITERAL_STRING;
+        return _symbol_t >= symbol_e::DATA_TYPE_INT &&
+            _symbol_t <= symbol_e::DATA_TYPE_CHAR;
     }
 
     bool Token::IsPunctuator()
