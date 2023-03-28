@@ -1,5 +1,5 @@
-#ifndef __LANGUAGE_ELEMENT_HPP__
-#define __LANGUAGE_ELEMENT_HPP__
+#ifndef __SYMBOL_HPP__
+#define __SYMBOL_HPP__
 
 #include <string>
 #include <unordered_map>
@@ -10,6 +10,10 @@ namespace engine::query
     {
         IDENTIFIER,
 
+        DATA_TYPE_INT,
+        DATA_TYPE_FLOAT,
+        DATA_TYPE_CHAR,
+
         LITERAL_INT,
         LITERAL_STRING,
 
@@ -18,6 +22,8 @@ namespace engine::query
         PUNCTUATOR_MINUS,
         PUNCTUATOR_ASTERISK,
         PUNCTUATOR_EQUALS,
+        PUNCTUATOR_LPAREN,
+        PUNCTUATOR_RPAREN,
         PUNCTUATOR_EOF,
 
         KEYWORD_CREATE_DATABASE,
@@ -40,6 +46,10 @@ namespace engine::query
     static std::unordered_map<symbol_e, std::string> symbol_e_map{
         { symbol_e::IDENTIFIER, std::string("IDENTIFIER") },
 
+        { symbol_e::DATA_TYPE_INT, std::string("DATA_TYPE_INT") },
+        { symbol_e::DATA_TYPE_FLOAT, std::string("DATA_TYPE_FLOAT") },
+        { symbol_e::DATA_TYPE_CHAR, std::string("DATA_TYPE_CHAR") },
+
         { symbol_e::LITERAL_INT, std::string("LITERAL_INT") },
         { symbol_e::LITERAL_STRING, std::string("LITERAL_STRING") },
 
@@ -48,6 +58,8 @@ namespace engine::query
         { symbol_e::PUNCTUATOR_MINUS, std::string("PUNCTUATOR_MINUS") },
         { symbol_e::PUNCTUATOR_ASTERISK, std::string("PUNCTUATOR_ASTERISK") },
         { symbol_e::PUNCTUATOR_EQUALS, std::string("PUNCTUATOR_EQUALS") },
+        { symbol_e::PUNCTUATOR_LPAREN, std::string("PUNCTUATOR_LPAREN") },
+        { symbol_e::PUNCTUATOR_RPAREN, std::string("PUNCTUATOR_RPAREN") },
         { symbol_e::PUNCTUATOR_EOF, std::string("PUNCTUATOR_EOF") },
 
         { symbol_e::KEYWORD_CREATE_DATABASE, std::string("KEYWORD_CREATE_DATABASE") },
@@ -73,6 +85,8 @@ namespace engine::query
         { std::string("-"), symbol_e::PUNCTUATOR_MINUS },
         { std::string("*"), symbol_e::PUNCTUATOR_ASTERISK },
         { std::string("="), symbol_e::PUNCTUATOR_EQUALS },
+        { std::string("("), symbol_e::PUNCTUATOR_LPAREN },
+        { std::string(")"), symbol_e::PUNCTUATOR_RPAREN },
 
         { std::string("CREATE DATABASE"), symbol_e::KEYWORD_CREATE_DATABASE },
         { std::string("DROP DATABASE"), symbol_e::KEYWORD_DROP_DATABASE },
@@ -87,4 +101,4 @@ namespace engine::query
     };
 };
 
-#endif // __LANGUAGE_ELEMENT_HPP__
+#endif // __SYMBOL_HPP__

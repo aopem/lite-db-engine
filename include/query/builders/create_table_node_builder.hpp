@@ -2,6 +2,7 @@
 #define __CREATE_TABLE_NODE_BUILDER_HPP__
 
 #include "node_builder.hpp"
+#include "../data_type.hpp"
 
 namespace engine::query
 {
@@ -11,7 +12,7 @@ namespace engine::query
             CreateTableNodeBuilder();
             CreateTableNodeBuilder& SetDatabase(std::string& database);
             CreateTableNodeBuilder& SetTable(std::string& database);
-            CreateTableNodeBuilder& AddColumn(std::pair<std::string, std::string> column);
+            CreateTableNodeBuilder& AddColumn(std::pair<std::string, data_type_t> column);
             std::unique_ptr<AstNode> Build() override;
 
         private:

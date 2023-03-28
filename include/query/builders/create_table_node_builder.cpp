@@ -19,7 +19,7 @@ namespace engine::query
         return *this;
     }
 
-    CreateTableNodeBuilder& CreateTableNodeBuilder::AddColumn(std::pair<std::string, std::string> column)
+    CreateTableNodeBuilder& CreateTableNodeBuilder::AddColumn(std::pair<std::string, data_type_t> column)
     {
         _node->columns.push_back(column);
         return *this;

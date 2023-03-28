@@ -68,10 +68,26 @@ namespace engine::query
         if (Utils::IsPositiveInt(value) || Utils::IsPositiveInt(value))
         {
             token->SetType(symbol_e::LITERAL_INT);
+            return;
+        }
+
+        // convert to uppercase for switch statement
+        boost::algorithm::to_upper(value);
+        if (value == "INT")
+        {
+            token->SetType(symbol_e::DATA_TYPE_INT);
+        }
+        else if (value == "FLOAT")
+        {
+            token->SetType(symbol_e::DATA_TYPE_FLOAT);
+        }
+        else if (value == "CHAR")
+        {
+            token->SetType(symbol_e::DATA_TYPE_CHAR);
         }
         else
         {
-            // if none of the above, reclassify as a literal string
+            // if none of the above, classify as identifier
             token->SetType(symbol_e::IDENTIFIER);
         }
     }
@@ -99,7 +115,7 @@ namespace engine::query
         sql_statement = boost::regex_replace(sql_statement, r, " ");
 
         // insert spaces between important characters
-        r = "(?<! )([=+*;-])(?! )";
+        r = "(?<! )([()=+*;-])(?! )";
         sql_statement = boost::regex_replace(sql_statement, r, " $1 ");
 
         // remove extra spaces in between characters

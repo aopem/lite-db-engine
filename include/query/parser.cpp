@@ -8,6 +8,49 @@ namespace engine::query
         RegisterBuilders();
     }
 
+    void Parser::RegisterBuilders()
+    {
+        _builder_factory->RegisterBuilder<CreateDatabaseNodeBuilder>(symbol_e::KEYWORD_CREATE_DATABASE);
+        _builder_factory->RegisterBuilder<CreateTableNodeBuilder>(symbol_e::KEYWORD_CREATE_TABLE);
+        _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
+    }
+
+    void Parser::ThrowParserError(std::string expected, std::string actual)
+    {
+        auto error_msg = "Expected '" + expected + "', got '" + actual + "'";
+        BOOST_LOG_TRIVIAL(error) << error_msg;
+        throw std::exception();
+    }
+
+    std::pair<std::string, data_type_t> Parser::ParseDataType(Lexer& lexer, CreateTableNodeBuilder* builder)
+    {
+        auto token = lexer.GetNextToken();
+        data_type_t data_type;
+        switch (token->GetType())
+        {
+            case symbol_e::DATA_TYPE_INT:
+                data_type.type = data_type_e::INT;
+                data_type.length = sizeof(int);
+                break;
+
+            case symbol_e::DATA_TYPE_FLOAT:
+                data_type.type = data_type_e::FLOAT;
+                data_type.length = sizeof(float);
+                break;
+
+            case symbol_e::DATA_TYPE_CHAR:
+                data_type.type = data_type_e::CHAR;
+                data_type.length = token->GetValue().size();
+                break;
+
+            default:
+                ThrowParserError("data type identifier", token->GetValue());
+                break;
+        }
+
+        return { token->GetValue(), data_type };
+    }
+
     std::shared_ptr<AstNode> Parser::Parse(Lexer& lexer)
     {
         auto token = lexer.GetNextToken();
@@ -44,9 +87,7 @@ namespace engine::query
 
         if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
         {
-            auto error_msg = "Expected database identifier, got '" + lexer.Peek()->GetValue() + "' instead";
-            BOOST_LOG_TRIVIAL(error) << error_msg;
-            throw std::invalid_argument(error_msg);
+            ThrowParserError("database identifier", lexer.Peek()->GetValue());
         }
 
         auto database = lexer.GetNextToken()->GetValue();
@@ -61,12 +102,38 @@ namespace engine::query
 
         if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
         {
-            auto error_msg = "Expected table identifier, got '" + lexer.Peek()->GetValue() + "' instead";
-            BOOST_LOG_TRIVIAL(error) << error_msg;
-            throw std::invalid_argument(error_msg);
+            ThrowParserError("table identifier", lexer.Peek()->GetValue());
         }
 
-        // TODO: add logic for parsing columns of CREATE TABLE statement
+        // get table name
+        auto table = lexer.GetNextToken()->GetValue();
+        builder->SetTable(table);
+
+        // parse table columns
+        if (lexer.Peek()->GetType() != symbol_e::PUNCTUATOR_LPAREN)
+        {
+            ThrowParserError("(", lexer.Peek()->GetValue());
+        }
+
+        // consume left parentheses
+        lexer.GetNextToken();
+
+        // parse table columns
+        while (lexer.Peek()->GetType() == symbol_e::IDENTIFIER ||
+               lexer.Peek()->IsDataType())
+        {
+            if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
+            {
+                ThrowParserError("column identifier", lexer.Peek()->GetValue());
+            }
+            auto column = lexer.GetNextToken()->GetValue();
+
+            if (!lexer.Peek()->IsDataType())
+            {
+                ThrowParserError("column data type", lexer.Peek()->GetValue());
+            }
+            auto data_type = ParseDataType(lexer, builder);
+        }
 
         return builder->Build();
     }
@@ -95,9 +162,7 @@ namespace engine::query
         // get table identifier
         if (lexer.Peek()->GetType() != symbol_e::KEYWORD_FROM)
         {
-            auto error_msg = "Expected SQL keyword 'FROM', got '" + lexer.Peek()->GetValue() + "' instead";
-            BOOST_LOG_TRIVIAL(error) << error_msg;
-            throw std::invalid_argument(error_msg);
+            ThrowParserError("FROM", lexer.Peek()->GetValue());
         }
 
         // get FROM token, then get table identifier
@@ -106,11 +171,5 @@ namespace engine::query
         builder->SetTable(table);
 
         return builder->Build();
-    }
-
-    void Parser::RegisterBuilders()
-    {
-        _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
-        _builder_factory->RegisterBuilder<CreateDatabaseNodeBuilder>(symbol_e::KEYWORD_CREATE_DATABASE);
     }
 };

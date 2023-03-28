@@ -15,7 +15,11 @@ int main()
         "CREATE DATABASE db;",
         "UPDATE mytable\nSET col = 120",
         "SELECT * FROM table",
-        "CREATE   TABLE new_table"
+        "CREATE   TABLE new_table ( \
+            col1 int,               \
+            col2 char(8),           \
+            col3 float              \
+        );"
     };
 
     for (auto statement : statements)

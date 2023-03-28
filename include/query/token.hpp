@@ -19,6 +19,7 @@ namespace engine::query
                 symbol_e symbol_t
             );
             bool IsLiteral();
+            bool IsDataType();
             bool IsPunctuator();
             bool IsKeyword();
             bool IsKeywordNode();
