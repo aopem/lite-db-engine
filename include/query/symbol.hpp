@@ -24,6 +24,7 @@ namespace engine::query
         PUNCTUATOR_EQUALS,
         PUNCTUATOR_LPAREN,
         PUNCTUATOR_RPAREN,
+        PUNCTUATOR_COMMA,
         PUNCTUATOR_EOF,
 
         KEYWORD_CREATE_DATABASE,
@@ -60,6 +61,7 @@ namespace engine::query
         { symbol_e::PUNCTUATOR_EQUALS, std::string("PUNCTUATOR_EQUALS") },
         { symbol_e::PUNCTUATOR_LPAREN, std::string("PUNCTUATOR_LPAREN") },
         { symbol_e::PUNCTUATOR_RPAREN, std::string("PUNCTUATOR_RPAREN") },
+        { symbol_e::PUNCTUATOR_COMMA, std::string("PUNCTUATOR_COMMA") },
         { symbol_e::PUNCTUATOR_EOF, std::string("PUNCTUATOR_EOF") },
 
         { symbol_e::KEYWORD_CREATE_DATABASE, std::string("KEYWORD_CREATE_DATABASE") },
@@ -87,6 +89,7 @@ namespace engine::query
         { std::string("="), symbol_e::PUNCTUATOR_EQUALS },
         { std::string("("), symbol_e::PUNCTUATOR_LPAREN },
         { std::string(")"), symbol_e::PUNCTUATOR_RPAREN },
+        { std::string(","), symbol_e::PUNCTUATOR_COMMA },
 
         { std::string("CREATE DATABASE"), symbol_e::KEYWORD_CREATE_DATABASE },
         { std::string("DROP DATABASE"), symbol_e::KEYWORD_DROP_DATABASE },

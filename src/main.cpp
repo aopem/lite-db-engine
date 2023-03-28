@@ -18,7 +18,8 @@ int main()
         "CREATE   TABLE new_table ( \
             col1 int,               \
             col2 char(8),           \
-            col3 float              \
+            col3 float,             \
+            col4 char(4)            \
         );"
     };
 

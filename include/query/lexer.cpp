@@ -115,7 +115,7 @@ namespace engine::query
         sql_statement = boost::regex_replace(sql_statement, r, " ");
 
         // insert spaces between important characters
-        r = "(?<! )([()=+*;-])(?! )";
+        r = "([,()=+*;-])";
         sql_statement = boost::regex_replace(sql_statement, r, " $1 ");
 
         // remove extra spaces in between characters
