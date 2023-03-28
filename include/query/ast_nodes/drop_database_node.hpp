@@ -8,7 +8,7 @@ namespace engine::query
     class DropDatabaseNode : public AstNode
     {
         public:
-            DropDatabaseNode();
+            std::string database;
     };
 };
 

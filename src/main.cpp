@@ -5,12 +5,24 @@
 #include <string>
 #include <vector>
 
+#include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
 
 using namespace engine::query;
 
+void set_logging_filter()
+{
+    boost::log::core::get()->set_filter
+    (
+        boost::log::trivial::severity >= boost::log::trivial::info
+    );
+}
+
 int main()
 {
+    set_logging_filter();
+
     std::vector<std::string> statements = {
         "CREATE DATABASE db;",
         "UPDATE mytable\nSET col = 120",
@@ -20,7 +32,8 @@ int main()
             test char(8),           \
             myFloat float,          \
             apples char(4)          \
-        );"
+        );",
+        "DROP DATABASE drop_this"
     };
 
     for (auto statement : statements)
@@ -49,5 +62,9 @@ int main()
     {
         BOOST_LOG_TRIVIAL(info) << "Column: " << col << ", Data type: " << static_cast<int>(data_type.type) << ", Length: " << std::to_string(data_type.length);
     }
+
+    Lexer drop_db_lexer(statements[4]);
+    auto drop_db_node = parser.Parse(drop_db_lexer);
+    BOOST_LOG_TRIVIAL(info) << "Database: " << static_cast<DropDatabaseNode*>(drop_db_node.get())->database;
     return 0;
 }

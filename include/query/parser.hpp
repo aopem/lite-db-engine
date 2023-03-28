@@ -27,6 +27,7 @@ namespace engine::query
             void ThrowParserError(std::string expected, std::string actual);
             data_type_t ParseDataType(Lexer& lexer, CreateTableNodeBuilder* builder);
             std::shared_ptr<AstNode> ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
+            std::shared_ptr<AstNode> ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
     };

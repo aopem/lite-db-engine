@@ -41,6 +41,7 @@ namespace engine::query
             }
 
             // insert new token, then advance to new token
+            BOOST_LOG_TRIVIAL(debug) << "Inserting: " << curr_word << ", Type: " << symbol_e_map[type];
             auto new_token = std::make_shared<Token>(curr_word, type);
             curr_token->children.insert({ word, new_token });
             curr_token = curr_token->children[word];

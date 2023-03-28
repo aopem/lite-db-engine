@@ -37,7 +37,7 @@ namespace engine::query
             // advance to next token
             _position++;
 
-            BOOST_LOG_TRIVIAL(info) << "Found token type: " << symbol_e_map[token->GetType()];
+            BOOST_LOG_TRIVIAL(debug) << "Found token type: " << symbol_e_map[token->GetType()];
             return token;
         }
         else if (_position == _symbols.size())
@@ -52,7 +52,7 @@ namespace engine::query
 
     std::shared_ptr<Token> Lexer::Peek()
     {
-        BOOST_LOG_TRIVIAL(info) << "Peeking next token...";
+        BOOST_LOG_TRIVIAL(debug) << "Peeking next token...";
 
         // save position, but return next token
         auto position = _position;

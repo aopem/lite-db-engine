@@ -11,6 +11,7 @@ namespace engine::query
     void Parser::RegisterBuilders()
     {
         _builder_factory->RegisterBuilder<CreateDatabaseNodeBuilder>(symbol_e::KEYWORD_CREATE_DATABASE);
+        _builder_factory->RegisterBuilder<DropDatabaseNodeBuilder>(symbol_e::KEYWORD_DROP_DATABASE);
         _builder_factory->RegisterBuilder<CreateTableNodeBuilder>(symbol_e::KEYWORD_CREATE_TABLE);
         _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
     }
@@ -68,6 +69,10 @@ namespace engine::query
                 node = ParseCreateDatabase(lexer, builder);
                 break;
 
+            case symbol_e::KEYWORD_DROP_DATABASE:
+                node = ParseDropDatabase(lexer, builder);
+                break;
+
             case symbol_e::KEYWORD_CREATE_TABLE:
                 node = ParseCreateTable(lexer, builder);
                 break;
@@ -88,6 +93,21 @@ namespace engine::query
     std::shared_ptr<AstNode> Parser::ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder_ptr)
     {
         auto builder = static_cast<CreateDatabaseNodeBuilder*>(builder_ptr.get());
+
+        if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
+        {
+            ThrowParserError("database identifier", lexer.Peek()->GetValue());
+        }
+
+        auto database = lexer.GetNextToken()->GetValue();
+        builder->SetDatabase(database);
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder_ptr)
+    {
+        auto builder = static_cast<DropDatabaseNodeBuilder*>(builder_ptr.get());
 
         if (lexer.Peek()->GetType() != symbol_e::IDENTIFIER)
         {
