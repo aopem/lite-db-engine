@@ -41,7 +41,7 @@ namespace engine::query
 
     void Parser::Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual)
     {
-        bool symbol_matched = true;
+        bool symbol_matched = false;
         for (auto symbol : expected)
         {
             symbol_matched = symbol_matched || Expect(symbol, actual, false);
@@ -187,7 +187,7 @@ namespace engine::query
             builder->AddColumn({ column, data_type });
 
             // read comma before next column type/closing right paren
-            Expect({ symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_LPAREN }, lexer.Peek());
+            Expect({ symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN }, lexer.Peek());
             lexer.GetNextToken();
         }
 
