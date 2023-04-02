@@ -230,6 +230,7 @@ namespace engine::query
         lexer.GetNextToken();
 
         // then get table identifier
+        Expect(symbol_e::IDENTIFIER, lexer.Peek());
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
