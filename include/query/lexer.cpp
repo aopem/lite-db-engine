@@ -86,7 +86,9 @@ namespace engine::query
         // classify an invalid literal string, with mismatched quotes
         if (value.length() >= 2 &&
             ((value[0] == '\'' && value[value.length() - 1] != '\'') ||
-             (value[0] == '"' && value[value.length() - 1] != '"')))
+             (value[0] == '"' && value[value.length() - 1] != '"')   ||
+             (value[0] != '\'' && value[value.length() - 1] == '\'') ||
+             (value[0] != '"' && value[value.length() - 1] == '"')))
         {
             token->SetType(symbol_e::INVALID);
             return;
