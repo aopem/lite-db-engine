@@ -11,8 +11,8 @@ namespace engine::query
     class SelectNode : public AstNode
     {
         public:
-            std::vector<std::string> columns;
             std::string table;
+            std::vector<std::string> columns;
     };
 };
 

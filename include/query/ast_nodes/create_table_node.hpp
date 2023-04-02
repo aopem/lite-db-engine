@@ -2,7 +2,7 @@
 #define __CREATE_TABLE_NODE_HPP__
 
 #include "ast_node.hpp"
-#include "../data_type.hpp"
+#include "../data.hpp"
 
 #include <string>
 #include <vector>

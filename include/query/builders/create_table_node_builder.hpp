@@ -2,7 +2,7 @@
 #define __CREATE_TABLE_NODE_BUILDER_HPP__
 
 #include "node_builder.hpp"
-#include "../data_type.hpp"
+#include "../data.hpp"
 
 namespace engine::query
 {

@@ -5,7 +5,7 @@
 #include "builders/builders.hpp"
 #include "lexer.hpp"
 #include "symbol.hpp"
-#include "data_type.hpp"
+#include "data.hpp"
 
 #include <memory>
 #include <string>

@@ -30,17 +30,17 @@ namespace engine::query
         switch (token->GetType())
         {
             case symbol_e::DATA_TYPE_INT:
-                data_type.type = data_type_e::INT;
+                data_type.name = data_type_e::INT;
                 data_type.length = sizeof(int);
                 break;
 
             case symbol_e::DATA_TYPE_FLOAT:
-                data_type.type = data_type_e::FLOAT;
+                data_type.name = data_type_e::FLOAT;
                 data_type.length = sizeof(float);
                 break;
 
             case symbol_e::DATA_TYPE_CHAR:
-                data_type.type = data_type_e::CHAR;
+                data_type.name = data_type_e::CHAR;
 
                 // get left paren, read length, then read right paren
                 lexer.GetNextToken();

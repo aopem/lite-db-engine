@@ -60,7 +60,7 @@ int main()
     auto create_table_node = parser.Parse(create_table_lexer);
     for (auto& [col, data_type] : static_cast<CreateTableNode*>(create_table_node.get())->columns)
     {
-        BOOST_LOG_TRIVIAL(info) << "Column: " << col << ", Data type: " << static_cast<int>(data_type.type) << ", Length: " << std::to_string(data_type.length);
+        BOOST_LOG_TRIVIAL(info) << "Column: " << col << ", Data type: " << static_cast<int>(data_type.name) << ", Length: " << std::to_string(data_type.length);
     }
 
     Lexer drop_db_lexer(statements[4]);
