@@ -3,12 +3,14 @@
 
 #include "ast_node.hpp"
 
+#include <string>
+
 namespace engine::query
 {
     class DeleteNode : public AstNode
     {
         public:
-            DeleteNode();
+            std::string table;
     };
 };
 

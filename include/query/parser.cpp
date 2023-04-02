@@ -15,6 +15,7 @@ namespace engine::query
         _builder_factory->RegisterBuilder<CreateTableNodeBuilder>(symbol_e::KEYWORD_CREATE_TABLE);
         _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
         _builder_factory->RegisterBuilder<UpdateNodeBuilder>(symbol_e::KEYWORD_UPDATE);
+        _builder_factory->RegisterBuilder<DeleteNodeBuilder>(symbol_e::KEYWORD_DELETE);
     }
 
     void Parser::ThrowParserError(std::string expected, std::string actual)
@@ -121,6 +122,10 @@ namespace engine::query
 
             case symbol_e::KEYWORD_UPDATE:
                 node = ParseUpdate(lexer, builder);
+                break;
+
+            case symbol_e::KEYWORD_DELETE:
+                node = ParseDelete(lexer, builder);
                 break;
 
             default:
@@ -268,6 +273,21 @@ namespace engine::query
                 lexer.Peek());
             lexer.GetNextToken();
         }
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder_ptr)
+    {
+        auto builder = static_cast<DeleteNodeBuilder*>(builder_ptr.get());
+
+        // get FROM token
+        Expect(symbol_e::KEYWORD_FROM, lexer.Peek());
+        lexer.GetNextToken();
+
+        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        auto table = lexer.GetNextToken()->GetValue();
+        builder->SetTable(table);
 
         return builder->Build();
     }

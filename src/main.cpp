@@ -33,45 +33,16 @@ int main()
             myFloat float,          \
             apples char(4)          \
         );",
-        "DROP DATABASE drop_this"
+        "DROP DATABASE drop_this",
+        "DELETE FROM specialTable;"
     };
 
+    Parser parser;
     for (auto statement : statements)
     {
         Lexer lexer(statement);
-        auto token = std::make_shared<Token>("", symbol_e::KEYWORD_INVALID);
-        while (token->GetType() != symbol_e::INVALID &&
-            token->GetType() != symbol_e::PUNCTUATOR_EOF)
-        {
-            token = lexer.GetNextToken();
-        }
+        auto ast_node = parser.Parse(lexer);
     }
 
-    Parser parser;
-    Lexer create_db_lexer(statements[0]);
-    auto create_db_node = parser.Parse(create_db_lexer);
-    BOOST_LOG_TRIVIAL(info) << "Database: " << static_cast<CreateDatabaseNode*>(create_db_node.get())->database;
-
-    Lexer update_lexer(statements[1]);
-    auto update_db_node = parser.Parse(update_lexer);
-    for (auto entry : static_cast<UpdateNode*>(update_db_node.get())->entries)
-    {
-        BOOST_LOG_TRIVIAL(info) << "Column: " << entry.first << ", Value: " << entry.second->GetValue();
-    }
-
-    Lexer select_lexer(statements[2]);
-    auto select_node = parser.Parse(select_lexer);
-    BOOST_LOG_TRIVIAL(info) << "Table: " << static_cast<SelectNode*>(select_node.get())->table;
-
-    Lexer create_table_lexer(statements[3]);
-    auto create_table_node = parser.Parse(create_table_lexer);
-    for (auto& [col, data_type] : static_cast<CreateTableNode*>(create_table_node.get())->columns)
-    {
-        BOOST_LOG_TRIVIAL(info) << "Column: " << col << ", Data type: " << static_cast<int>(data_type.name) << ", Length: " << std::to_string(data_type.length);
-    }
-
-    Lexer drop_db_lexer(statements[4]);
-    auto drop_db_node = parser.Parse(drop_db_lexer);
-    BOOST_LOG_TRIVIAL(info) << "Database: " << static_cast<DropDatabaseNode*>(drop_db_node.get())->database;
     return 0;
 }

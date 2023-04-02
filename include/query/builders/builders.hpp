@@ -8,5 +8,6 @@
 #include "create_table_node_builder.hpp"
 #include "select_node_builder.hpp"
 #include "update_node_builder.hpp"
+#include "delete_node_builder.hpp"
 
 #endif // __BUILDERS_HPP__

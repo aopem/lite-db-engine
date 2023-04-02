@@ -7,5 +7,6 @@
 #include "drop_database_node.hpp"
 #include "select_node.hpp"
 #include "update_node.hpp"
+#include "delete_node.hpp"
 
 #endif // __AST_NODES_HPP__
