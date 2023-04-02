@@ -25,7 +25,7 @@ int main()
 
     std::vector<std::string> statements = {
         "CREATE DATABASE db;",
-        "UPDATE mytable\nSET col = 120",
+        "UPDATE mytable\nSET col = 120, abc='house';",
         "SELECT * FROM table",
         "CREATE   TABLE new_table ( \
             col1 int,               \
@@ -51,6 +51,13 @@ int main()
     Lexer create_db_lexer(statements[0]);
     auto create_db_node = parser.Parse(create_db_lexer);
     BOOST_LOG_TRIVIAL(info) << "Database: " << static_cast<CreateDatabaseNode*>(create_db_node.get())->database;
+
+    Lexer update_lexer(statements[1]);
+    auto update_db_node = parser.Parse(update_lexer);
+    for (auto entry : static_cast<UpdateNode*>(update_db_node.get())->entries)
+    {
+        BOOST_LOG_TRIVIAL(info) << "Column: " << entry.first << ", Value: " << entry.second->GetValue();
+    }
 
     Lexer select_lexer(statements[2]);
     auto select_node = parser.Parse(select_lexer);

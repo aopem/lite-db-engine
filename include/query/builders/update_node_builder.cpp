@@ -13,9 +13,9 @@ namespace engine::query
         return *this;
     }
 
-    UpdateNodeBuilder& UpdateNodeBuilder::AddColumn(std::pair<std::string, data_entry_t> column)
+    UpdateNodeBuilder& UpdateNodeBuilder::AddUpdatedEntry(std::pair<std::string, std::shared_ptr<Token>> entry)
     {
-        _node->columns.push_back(column);
+        _node->entries.push_back(entry);
         return *this;
     }
 

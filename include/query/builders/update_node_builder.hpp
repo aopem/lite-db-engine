@@ -2,7 +2,7 @@
 #define __UPDATE_NODE_BUILDER_HPP__
 
 #include "node_builder.hpp"
-#include "../data.hpp"
+#include "../token.hpp"
 
 #include <string>
 
@@ -13,7 +13,7 @@ namespace engine::query
         public:
             UpdateNodeBuilder();
             UpdateNodeBuilder& SetTable(std::string& table);
-            UpdateNodeBuilder& AddColumn(std::pair<std::string, data_entry_t> column);
+            UpdateNodeBuilder& AddUpdatedEntry(std::pair<std::string, std::shared_ptr<Token>> entry);
             std::unique_ptr<AstNode> Build() override;
 
         private:

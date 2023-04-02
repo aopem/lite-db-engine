@@ -24,6 +24,7 @@ namespace engine::query
             bool IsKeyword();
             bool IsKeywordNode();
             bool IsInvalidKeyword();
+            bool IsIdentifier();
             symbol_e GetType();
             std::string GetValue();
             void SetType(symbol_e symbol_t);

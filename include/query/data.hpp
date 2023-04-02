@@ -17,12 +17,6 @@ namespace engine::query
         data_type_e name;
         size_t length;
     };
-
-    struct data_entry_t
-    {
-        std::string value;
-        data_type_t type;
-    };
 };
 
 #endif // __DATA_TYPE_HPP__

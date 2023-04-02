@@ -2,7 +2,7 @@
 #define __UPDATE_NODE_HPP__
 
 #include "ast_node.hpp"
-#include "../data.hpp"
+#include "../token.hpp"
 
 #include <string>
 
@@ -12,7 +12,7 @@ namespace engine::query
     {
         public:
             std::string table;
-            std::vector<std::pair<std::string, data_entry_t>> columns;
+            std::vector<std::pair<std::string, std::shared_ptr<Token>>> entries;
     };
 };
 

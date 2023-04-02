@@ -37,6 +37,11 @@ namespace engine::query
         return _symbol_t == symbol_e::KEYWORD_INVALID;
     }
 
+    bool Token::IsIdentifier()
+    {
+        return _symbol_t == symbol_e::IDENTIFIER;
+    }
+
     symbol_e Token::GetType()
     {
         return _symbol_t;

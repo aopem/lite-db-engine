@@ -65,9 +65,30 @@ namespace engine::query
     void Lexer::ClassifyString(std::shared_ptr<Token>& token)
     {
         auto value = token->GetValue();
+
+        // classify a literal int
         if (Utils::IsPositiveInt(value) || Utils::IsPositiveInt(value))
         {
             token->SetType(symbol_e::LITERAL_INT);
+            return;
+        }
+
+        // classify a literal string - size must be at least 2 for matching quotes
+        // must also have matching single/double quotes
+        if (value.length() >= 2 &&
+            ((value[0] == '\'' && value[value.length() - 1] == '\'') ||
+             (value[0] == '"' && value[value.length() - 1] == '"')))
+        {
+            token->SetType(symbol_e::LITERAL_STRING);
+            return;
+        }
+
+        // classify an invalid literal string, with mismatched quotes
+        if (value.length() >= 2 &&
+            ((value[0] == '\'' && value[value.length() - 1] != '\'') ||
+             (value[0] == '"' && value[value.length() - 1] != '"')))
+        {
+            token->SetType(symbol_e::INVALID);
             return;
         }
 

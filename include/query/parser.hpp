@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 #include <boost/log/trivial.hpp>
 
@@ -25,11 +26,14 @@ namespace engine::query
 
             void RegisterBuilders();
             void ThrowParserError(std::string expected, std::string actual);
+            bool Expect(symbol_e expected, std::shared_ptr<Token> actual, bool throw_errors = true);
+            void Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual);
             data_type_t ParseDataType(Lexer& lexer, CreateTableNodeBuilder* builder);
             std::shared_ptr<AstNode> ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
             std::shared_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
+            std::shared_ptr<AstNode> ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder>& builder);
     };
 };
 
