@@ -3,7 +3,7 @@
 
 #include "ast_nodes/ast_nodes.hpp"
 
-#include <string>
+#include <memory>
 
 namespace engine::query
 {
