@@ -4,6 +4,9 @@ project("db-engine-lite")
 # use C++23 standard
 set(CMAKE_CXX_STANDARD 23)
 
+# for debugging
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
 # find Boost library
 find_package(Boost 1.81 REQUIRED COMPONENTS
     log

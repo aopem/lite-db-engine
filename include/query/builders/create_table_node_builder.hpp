@@ -14,6 +14,7 @@ namespace engine::query
             CreateTableNodeBuilder& SetTable(std::string& database);
             CreateTableNodeBuilder& AddColumn(std::pair<std::string, data_type_t> column);
             std::unique_ptr<AstNode> Build() override;
+            std::unique_ptr<NodeBuilder> Clone() override;
 
         private:
             std::unique_ptr<CreateTableNode> _node;

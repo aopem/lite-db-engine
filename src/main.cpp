@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
@@ -15,7 +16,7 @@ void set_logging_filter()
 {
     boost::log::core::get()->set_filter
     (
-        boost::log::trivial::severity >= boost::log::trivial::info
+        boost::log::trivial::severity >= boost::log::trivial::debug
     );
 }
 
@@ -42,6 +43,23 @@ int main()
     {
         Lexer lexer(statement);
         auto ast_node = parser.Parse(lexer);
+    }
+
+    std::cout << "[db-engine-lite] SQL Terminal" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+    std::string user_sql_statement = "";
+    std::vector<std::unique_ptr<AstNode>> nodes;
+    while (true)
+    {
+        user_sql_statement = "CREATE DATABASE db";
+
+        // read input
+        std::cout << ">> ";
+        std::getline(std::cin, user_sql_statement);
+
+        // lex and parse
+        Lexer lexer(user_sql_statement);
+        nodes.push_back(parser.Parse(lexer));
     }
 
     return 0;

@@ -64,8 +64,7 @@ namespace engine::query
             // it is possible this token could be a string literal, etc.
             if (curr_token->children.count(word) == 0)
             {
-                auto new_token = std::make_shared<Token>(value, symbol_e::KEYWORD_INVALID);
-                return new_token;
+                return std::make_shared<Token>(value, symbol_e::KEYWORD_INVALID);
             }
 
             curr_token = curr_token->children[word];

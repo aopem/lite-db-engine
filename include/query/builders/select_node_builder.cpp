@@ -23,4 +23,9 @@ namespace engine::query
     {
         return std::move(_node);
     }
+
+    std::unique_ptr<NodeBuilder> SelectNodeBuilder::Clone()
+    {
+        return std::make_unique<SelectNodeBuilder>();
+    }
 };

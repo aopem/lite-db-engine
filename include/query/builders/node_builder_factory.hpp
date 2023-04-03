@@ -22,7 +22,7 @@ namespace engine::query
                 if (!std::is_base_of<NodeBuilder, T>::value)
                 {
                     auto type_name = std::string(typeid(T).name());
-                    auto error_msg = "NodeBuilderFactor cannot register type '" + type_name + "', which is not derived from NodeBuilder";
+                    auto error_msg = "NodeBuilderFactory cannot register type '" + type_name + "', which is not derived from NodeBuilder";
                     BOOST_LOG_TRIVIAL(error) << error_msg;
                     return;
                 }
@@ -39,7 +39,7 @@ namespace engine::query
                     throw std::runtime_error(error_msg);
                 }
 
-                return std::move(_builder_map[type]);
+                return std::unique_ptr<NodeBuilder>(_builder_map[type]->Clone());
             }
 
         private:

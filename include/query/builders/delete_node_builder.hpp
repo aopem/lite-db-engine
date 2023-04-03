@@ -11,6 +11,7 @@ namespace engine::query
             DeleteNodeBuilder();
             DeleteNodeBuilder& SetTable(std::string& table);
             std::unique_ptr<AstNode> Build() override;
+            std::unique_ptr<NodeBuilder> Clone() override;
 
         private:
             std::unique_ptr<DeleteNode> _node;

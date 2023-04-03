@@ -29,4 +29,9 @@ namespace engine::query
     {
         return std::move(_node);
     }
+
+    std::unique_ptr<NodeBuilder> CreateTableNodeBuilder::Clone()
+    {
+        return std::make_unique<CreateTableNodeBuilder>();
+    }
 };

@@ -11,6 +11,7 @@ namespace engine::query
             DropDatabaseNodeBuilder();
             DropDatabaseNodeBuilder& SetDatabase(std::string& database);
             std::unique_ptr<AstNode> Build() override;
+            std::unique_ptr<NodeBuilder> Clone() override;
 
         private:
             std::unique_ptr<DropDatabaseNode> _node;

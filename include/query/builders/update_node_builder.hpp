@@ -15,6 +15,7 @@ namespace engine::query
             UpdateNodeBuilder& SetTable(std::string& table);
             UpdateNodeBuilder& AddUpdatedEntry(std::pair<std::string, std::shared_ptr<Token>> entry);
             std::unique_ptr<AstNode> Build() override;
+            std::unique_ptr<NodeBuilder> Clone() override;
 
         private:
             std::unique_ptr<UpdateNode> _node;
