@@ -135,7 +135,7 @@ namespace engine::query
         }
 
         BOOST_LOG_TRIVIAL(debug) << "Parsing complete";
-        return node;
+        return std::move(node);
     }
 
     std::unique_ptr<AstNode> Parser::ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
