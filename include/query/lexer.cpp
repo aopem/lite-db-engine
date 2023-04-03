@@ -42,11 +42,11 @@ namespace engine::query
         }
         else if (_position == _symbols.size())
         {
-            return std::make_unique<Token>("", symbol_e::PUNCTUATOR_EOF);
+            return std::make_shared<Token>("", symbol_e::PUNCTUATOR_EOF);
         }
         else
         {
-            return std::make_unique<Token>("", symbol_e::INVALID);
+            return std::make_shared<Token>("", symbol_e::INVALID);
         }
     }
 
