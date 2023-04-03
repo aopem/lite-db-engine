@@ -16,7 +16,7 @@ void set_logging_filter()
 {
     boost::log::core::get()->set_filter
     (
-        boost::log::trivial::severity >= boost::log::trivial::debug
+        boost::log::trivial::severity >= boost::log::trivial::info
     );
 }
 
@@ -47,11 +47,9 @@ int main()
 
     std::cout << "[db-engine-lite] SQL Terminal" << std::endl;
     std::cout << "-----------------------------" << std::endl;
-    std::string user_sql_statement = "";
-    std::vector<std::unique_ptr<AstNode>> nodes;
     while (true)
     {
-        user_sql_statement = "CREATE DATABASE db";
+        std::string user_sql_statement = "";
 
         // read input
         std::cout << ">> ";
@@ -59,7 +57,7 @@ int main()
 
         // lex and parse
         Lexer lexer(user_sql_statement);
-        nodes.push_back(parser.Parse(lexer));
+        parser.Parse(lexer);
     }
 
     return 0;

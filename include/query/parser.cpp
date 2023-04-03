@@ -218,11 +218,19 @@ namespace engine::query
         else
         {
             // add all column identifiers
-            while (lexer.Peek()->GetType() == symbol_e::IDENTIFIER)
+            while (lexer.Peek()->IsIdentifier() ||
+                lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
             {
                 Expect(symbol_e::IDENTIFIER, lexer.Peek());
                 auto column = lexer.GetNextToken()->GetValue();
                 builder->AddColumn(column);
+
+                // read comma token if present
+                Expect({ symbol_e::PUNCTUATOR_COMMA, symbol_e::KEYWORD_FROM }, lexer.Peek());
+                if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+                {
+                    lexer.GetNextToken();
+                }
             }
         }
 
