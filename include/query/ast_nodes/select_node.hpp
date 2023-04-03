@@ -5,10 +5,11 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace engine::query
 {
-    class SelectNode : public AstNode
+    class SelectNode : public AstNode, public std::enable_shared_from_this<SelectNode>
     {
         public:
             std::string table;

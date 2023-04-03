@@ -11,11 +11,11 @@ namespace engine::query
             SelectNodeBuilder();
             SelectNodeBuilder& AddColumn(std::string& column);
             SelectNodeBuilder& SetTable(std::string& table);
-            std::unique_ptr<AstNode> Build() override;
+            std::shared_ptr<AstNode> Build() override;
             std::unique_ptr<NodeBuilder> Clone() override;
 
         private:
-            std::unique_ptr<SelectNode> _node;
+            std::shared_ptr<SelectNode> _node;
     };
 };
 

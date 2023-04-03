@@ -3,9 +3,12 @@
 
 #include "ast_node.hpp"
 
+#include <string>
+#include <memory>
+
 namespace engine::query
 {
-    class DropDatabaseNode : public AstNode
+    class DropDatabaseNode : public AstNode, public std::enable_shared_from_this<DropDatabaseNode>
     {
         public:
             std::string database;

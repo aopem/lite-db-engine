@@ -4,7 +4,7 @@ namespace engine::query
 {
     DeleteNodeBuilder::DeleteNodeBuilder()
     {
-        _node = std::make_unique<DeleteNode>();
+        _node = std::make_shared<DeleteNode>();
     }
 
     DeleteNodeBuilder& DeleteNodeBuilder::SetTable(std::string& table)
@@ -13,9 +13,9 @@ namespace engine::query
         return *this;
     }
 
-    std::unique_ptr<AstNode> DeleteNodeBuilder::Build()
+    std::shared_ptr<AstNode> DeleteNodeBuilder::Build()
     {
-        return std::move(_node);
+        return _node;
     }
 
     std::unique_ptr<NodeBuilder> DeleteNodeBuilder::Clone()

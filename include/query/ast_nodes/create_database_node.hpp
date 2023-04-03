@@ -4,10 +4,11 @@
 #include "ast_node.hpp"
 
 #include <string>
+#include <memory>
 
 namespace engine::query
 {
-    class CreateDatabaseNode : public AstNode
+    class CreateDatabaseNode : public AstNode, public std::enable_shared_from_this<CreateDatabaseNode>
     {
         public:
             std::string database;

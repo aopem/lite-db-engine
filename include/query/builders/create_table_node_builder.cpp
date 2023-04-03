@@ -4,7 +4,7 @@ namespace engine::query
 {
     CreateTableNodeBuilder::CreateTableNodeBuilder()
     {
-        _node = std::make_unique<CreateTableNode>();
+        _node = std::make_shared<CreateTableNode>();
     }
 
     CreateTableNodeBuilder& CreateTableNodeBuilder::SetDatabase(std::string& database)
@@ -25,9 +25,9 @@ namespace engine::query
         return *this;
     }
 
-    std::unique_ptr<AstNode> CreateTableNodeBuilder::Build()
+    std::shared_ptr<AstNode> CreateTableNodeBuilder::Build()
     {
-        return std::move(_node);
+        return _node;
     }
 
     std::unique_ptr<NodeBuilder> CreateTableNodeBuilder::Clone()

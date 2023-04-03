@@ -95,10 +95,10 @@ namespace engine::query
         return data_type;
     }
 
-    std::unique_ptr<AstNode> Parser::Parse(Lexer& lexer)
+    std::shared_ptr<AstNode> Parser::Parse(Lexer& lexer)
     {
         auto token = lexer.GetNextToken();
-        auto node = std::make_unique<AstNode>();
+        auto node = std::make_shared<AstNode>();
 
         BOOST_LOG_TRIVIAL(info) << "Parsing token type: " << symbol_e_map[token->GetType()];
         auto builder = _builder_factory->CreateBuilder(token->GetType());
@@ -138,7 +138,7 @@ namespace engine::query
         return std::move(node);
     }
 
-    std::unique_ptr<AstNode> Parser::ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<CreateDatabaseNodeBuilder> builder(static_cast<CreateDatabaseNodeBuilder*>(builder_ptr.release()));
 
@@ -146,10 +146,10 @@ namespace engine::query
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 
-    std::unique_ptr<AstNode> Parser::ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<DropDatabaseNodeBuilder> builder(static_cast<DropDatabaseNodeBuilder*>(builder_ptr.release()));
 
@@ -157,10 +157,10 @@ namespace engine::query
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 
-    std::unique_ptr<AstNode> Parser::ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<CreateTableNodeBuilder> builder(static_cast<CreateTableNodeBuilder*>(builder_ptr.release()));
 
@@ -201,10 +201,10 @@ namespace engine::query
         Expect(symbol_e::PUNCTUATOR_SEMICOLON, lexer.Peek());
         lexer.GetNextToken();
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 
-    std::unique_ptr<AstNode> Parser::ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         // get proper builder
         std::unique_ptr<SelectNodeBuilder> builder(static_cast<SelectNodeBuilder*>(builder_ptr.release()));
@@ -243,10 +243,10 @@ namespace engine::query
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 
-    std::unique_ptr<AstNode> Parser::ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         // get proper builder
         std::unique_ptr<UpdateNodeBuilder> builder(static_cast<UpdateNodeBuilder*>(builder_ptr.release()));
@@ -284,10 +284,10 @@ namespace engine::query
             lexer.GetNextToken();
         }
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 
-    std::unique_ptr<AstNode> Parser::ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    std::shared_ptr<AstNode> Parser::ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<DeleteNodeBuilder> builder(static_cast<DeleteNodeBuilder*>(builder_ptr.release()));
 
@@ -299,6 +299,6 @@ namespace engine::query
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        return std::move(builder->Build());
+        return builder->Build();
     }
 };

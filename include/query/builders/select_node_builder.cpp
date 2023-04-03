@@ -4,7 +4,7 @@ namespace engine::query
 {
     SelectNodeBuilder::SelectNodeBuilder()
     {
-        _node = std::make_unique<SelectNode>();
+        _node = std::make_shared<SelectNode>();
     }
 
     SelectNodeBuilder& SelectNodeBuilder::AddColumn(std::string& column)
@@ -19,9 +19,9 @@ namespace engine::query
         return *this;
     }
 
-    std::unique_ptr<AstNode> SelectNodeBuilder::Build()
+    std::shared_ptr<AstNode> SelectNodeBuilder::Build()
     {
-        return std::move(_node);
+        return _node;
     }
 
     std::unique_ptr<NodeBuilder> SelectNodeBuilder::Clone()

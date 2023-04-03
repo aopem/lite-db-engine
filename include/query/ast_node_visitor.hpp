@@ -11,12 +11,12 @@ namespace engine::query
     {
         public:
             virtual ~AstNodeVisitor() = default;
-            virtual void visit(std::unique_ptr<CreateDatabaseNode> node) = 0;
-            virtual void visit(std::unique_ptr<CreateTableNode> node) = 0;
-            virtual void visit(std::unique_ptr<DeleteNode> node) = 0;
-            virtual void visit(std::unique_ptr<DropDatabaseNode> node) = 0;
-            virtual void visit(std::unique_ptr<SelectNode> node) = 0;
-            virtual void visit(std::unique_ptr<UpdateNode> node) = 0;
+            virtual void visit(std::shared_ptr<CreateDatabaseNode> node) = 0;
+            virtual void visit(std::shared_ptr<CreateTableNode> node) = 0;
+            virtual void visit(std::shared_ptr<DeleteNode> node) = 0;
+            virtual void visit(std::shared_ptr<DropDatabaseNode> node) = 0;
+            virtual void visit(std::shared_ptr<SelectNode> node) = 0;
+            virtual void visit(std::shared_ptr<UpdateNode> node) = 0;
     };
 };
 

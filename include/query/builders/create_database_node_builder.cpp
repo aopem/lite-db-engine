@@ -4,7 +4,7 @@ namespace engine::query
 {
     CreateDatabaseNodeBuilder::CreateDatabaseNodeBuilder()
     {
-        _node = std::make_unique<CreateDatabaseNode>();
+        _node = std::make_shared<CreateDatabaseNode>();
     }
 
     CreateDatabaseNodeBuilder& CreateDatabaseNodeBuilder::SetDatabase(std::string& database)
@@ -13,9 +13,9 @@ namespace engine::query
         return *this;
     }
 
-    std::unique_ptr<AstNode> CreateDatabaseNodeBuilder::Build()
+    std::shared_ptr<AstNode> CreateDatabaseNodeBuilder::Build()
     {
-        return std::move(_node);
+        return _node;
     }
 
     std::unique_ptr<NodeBuilder> CreateDatabaseNodeBuilder::Clone()

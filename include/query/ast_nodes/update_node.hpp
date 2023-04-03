@@ -5,10 +5,12 @@
 #include "../token.hpp"
 
 #include <string>
+#include <vector>
+#include <memory>
 
 namespace engine::query
 {
-    class UpdateNode : public AstNode
+    class UpdateNode : public AstNode, public std::enable_shared_from_this<UpdateNode>
     {
         public:
             std::string table;

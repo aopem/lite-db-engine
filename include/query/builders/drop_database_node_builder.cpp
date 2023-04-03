@@ -4,7 +4,7 @@ namespace engine::query
 {
     DropDatabaseNodeBuilder::DropDatabaseNodeBuilder()
     {
-        _node = std::make_unique<DropDatabaseNode>();
+        _node = std::make_shared<DropDatabaseNode>();
     }
 
     DropDatabaseNodeBuilder& DropDatabaseNodeBuilder::SetDatabase(std::string& database)
@@ -13,9 +13,9 @@ namespace engine::query
         return *this;
     }
 
-    std::unique_ptr<AstNode> DropDatabaseNodeBuilder::Build()
+    std::shared_ptr<AstNode> DropDatabaseNodeBuilder::Build()
     {
-        return std::move(_node);
+        return _node;
     }
 
     std::unique_ptr<NodeBuilder> DropDatabaseNodeBuilder::Clone()

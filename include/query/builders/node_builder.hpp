@@ -12,7 +12,7 @@ namespace engine::query
         public:
             NodeBuilder() = default;
             virtual ~NodeBuilder() = default;
-            virtual std::unique_ptr<AstNode> Build() = 0;
+            virtual std::shared_ptr<AstNode> Build() = 0;
             virtual std::unique_ptr<NodeBuilder> Clone() = 0;
     };
 };

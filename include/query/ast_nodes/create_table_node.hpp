@@ -6,10 +6,11 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace engine::query
 {
-    class CreateTableNode : public AstNode
+    class CreateTableNode : public AstNode, public std::enable_shared_from_this<CreateTableNode>
     {
         public:
             std::string database;

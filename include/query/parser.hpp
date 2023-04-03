@@ -19,7 +19,7 @@ namespace engine::query
     {
         public:
             Parser();
-            std::unique_ptr<AstNode> Parse(Lexer& lexer);
+            std::shared_ptr<AstNode> Parse(Lexer& lexer);
 
         private:
             std::unique_ptr<NodeBuilderFactory> _builder_factory;
@@ -29,12 +29,12 @@ namespace engine::query
             bool Expect(symbol_e expected, std::shared_ptr<Token> actual, bool throw_errors = true);
             void Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual);
             data_type_t ParseDataType(Lexer& lexer, std::unique_ptr<CreateTableNodeBuilder>& builder);
-            std::unique_ptr<AstNode> ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
-            std::unique_ptr<AstNode> ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
-            std::unique_ptr<AstNode> ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
-            std::unique_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
-            std::unique_ptr<AstNode> ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
-            std::unique_ptr<AstNode> ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseDropDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseCreateTable(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
     };
 };
 
