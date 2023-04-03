@@ -98,34 +98,33 @@ namespace engine::query
     std::shared_ptr<AstNode> Parser::Parse(Lexer& lexer)
     {
         auto token = lexer.GetNextToken();
-        auto node = std::make_shared<AstNode>();
 
         BOOST_LOG_TRIVIAL(info) << "Parsing token type: " << symbol_e_map[token->GetType()];
         auto builder = _builder_factory->CreateBuilder(token->GetType());
         switch (token->GetType())
         {
             case symbol_e::KEYWORD_CREATE_DATABASE:
-                node = ParseCreateDatabase(lexer, std::move(builder));
+                return ParseCreateDatabase(lexer, std::move(builder));
                 break;
 
             case symbol_e::KEYWORD_DROP_DATABASE:
-                node = ParseDropDatabase(lexer, std::move(builder));
+                return ParseDropDatabase(lexer, std::move(builder));
                 break;
 
             case symbol_e::KEYWORD_CREATE_TABLE:
-                node = ParseCreateTable(lexer, std::move(builder));
+                return ParseCreateTable(lexer, std::move(builder));
                 break;
 
             case symbol_e::KEYWORD_SELECT:
-                node = ParseSelect(lexer, std::move(builder));
+                return ParseSelect(lexer, std::move(builder));
                 break;
 
             case symbol_e::KEYWORD_UPDATE:
-                node = ParseUpdate(lexer, std::move(builder));
+                return ParseUpdate(lexer, std::move(builder));
                 break;
 
             case symbol_e::KEYWORD_DELETE:
-                node = ParseDelete(lexer, std::move(builder));
+                return ParseDelete(lexer, std::move(builder));
                 break;
 
             default:
@@ -133,9 +132,6 @@ namespace engine::query
                 throw std::invalid_argument(error_msg);
                 break;
         }
-
-        BOOST_LOG_TRIVIAL(debug) << "Parsing complete";
-        return std::move(node);
     }
 
     std::shared_ptr<AstNode> Parser::ParseCreateDatabase(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)

@@ -12,6 +12,11 @@ namespace engine::query
     {
         public:
             std::string table;
+
+            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override
+            {
+                visitor->Visit(shared_from_this());
+            }
     };
 };
 
