@@ -13,7 +13,7 @@ namespace engine::query
         public:
             std::string database;
 
-            void Accept(std::shared_ptr<AstNodeVisitor>& visitor) override
+            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override
             {
                 visitor->Visit(shared_from_this());
             }

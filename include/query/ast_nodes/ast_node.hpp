@@ -12,7 +12,7 @@ namespace engine::query
         public:
             AstNode() = default;
             virtual ~AstNode() = default;
-            virtual void Accept(std::shared_ptr<AstNodeVisitor>& visitor) = 0;
+            virtual void Accept(std::shared_ptr<AstNodeVisitor> visitor) = 0;
     };
 };
 

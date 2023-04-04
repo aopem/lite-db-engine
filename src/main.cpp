@@ -1,6 +1,7 @@
 #include "query/lexer.hpp"
 #include "query/token.hpp"
 #include "query/parser.hpp"
+#include "query_executor.hpp"
 
 #include <string>
 #include <vector>
@@ -11,6 +12,7 @@
 #include <boost/log/expressions.hpp>
 
 using namespace engine::query;
+using namespace engine;
 
 void set_logging_filter()
 {
@@ -57,7 +59,10 @@ int main()
 
         // lex and parse
         Lexer lexer(user_sql_statement);
-        parser.Parse(lexer);
+        auto node = parser.Parse(lexer);
+
+        auto executor = std::make_shared<QueryExecutor>();
+        node->Accept(executor);
     }
 
     return 0;
