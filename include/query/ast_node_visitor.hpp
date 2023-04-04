@@ -20,6 +20,7 @@ namespace engine::query
     class AstNodeVisitor
     {
         public:
+            AstNodeVisitor() = default;
             virtual ~AstNodeVisitor() = default;
             virtual void Visit(std::shared_ptr<CreateDatabaseNode> node) = 0;
             virtual void Visit(std::shared_ptr<CreateTableNode> node) = 0;

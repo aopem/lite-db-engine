@@ -7,6 +7,9 @@
 
 namespace engine::query
 {
+    // forward declaration of visitor
+    class AstNodeVisitor;
+
     class AstNode
     {
         public:

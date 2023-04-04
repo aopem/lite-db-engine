@@ -1,6 +1,7 @@
 #ifndef __DELETE_NODE_HPP__
 #define __DELETE_NODE_HPP__
 
+#include "../ast_node_visitor.hpp"
 #include "ast_node.hpp"
 
 #include <string>
@@ -13,10 +14,7 @@ namespace engine::query
         public:
             std::string table;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override
-            {
-                visitor->Visit(shared_from_this());
-            }
+            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 
