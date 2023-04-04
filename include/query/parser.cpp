@@ -20,9 +20,10 @@ namespace engine::query
         _builder_factory->RegisterBuilder<ShowDatabasesNodeBuilder>(symbol_e::KEYWORD_SHOW_DATABASES);
     }
 
-    void Parser::ThrowParserError(std::string expected, std::string actual)
+    void Parser::ThrowParserError(std::string expected, std::shared_ptr<Token> actual)
     {
-        auto error_msg = "Expected '" + expected + "', got '" + actual + "'";
+        auto error_msg = "Expected '" + expected + "', got symbol '" + actual->GetValue() + \
+            "' of type '" + symbol_e_map[actual->GetType()] + "'";
         BOOST_LOG_TRIVIAL(error) << error_msg;
         throw std::exception();
     }
@@ -33,7 +34,7 @@ namespace engine::query
         {
             if (throw_errors)
             {
-                ThrowParserError(symbol_e_map[expected], actual->GetValue());
+                ThrowParserError(symbol_e_map[expected], actual);
             }
 
             return false;
@@ -60,7 +61,7 @@ namespace engine::query
 
             // trim for output, then throw error
             Utils::RightTrim(expected_elements);
-            ThrowParserError(expected_elements, actual->GetValue());
+            ThrowParserError(expected_elements, actual);
         }
     }
 
@@ -90,7 +91,7 @@ namespace engine::query
                 break;
 
             default:
-                ThrowParserError("data type identifier", token->GetValue());
+                ThrowParserError("data type identifier", token);
                 break;
         }
 
@@ -191,7 +192,7 @@ namespace engine::query
             // read data type
             if (!lexer.Peek()->IsDataType())
             {
-                ThrowParserError("column data type", lexer.Peek()->GetValue());
+                ThrowParserError("column data type", lexer.Peek());
             }
             auto data_type = ParseDataType(lexer, builder);
 
