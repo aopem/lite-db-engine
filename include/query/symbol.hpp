@@ -36,6 +36,9 @@ namespace engine::query
         KEYWORD_UPDATE,
         KEYWORD_SET,
         KEYWORD_DELETE,
+        KEYWORD_USE,
+        KEYWORD_SHOW,
+        KEYWORD_SHOW_DATABASES,
         KEYWORD_NODE,
 
         KEYWORD_INVALID,
@@ -72,6 +75,9 @@ namespace engine::query
         { symbol_e::KEYWORD_UPDATE, std::string("KEYWORD_UPDATE") },
         { symbol_e::KEYWORD_SET, std::string("KEYWORD_SET") },
         { symbol_e::KEYWORD_DELETE, std::string("KEYWORD_DELETE") },
+        { symbol_e::KEYWORD_USE, std::string("KEYWORD_USE") },
+        { symbol_e::KEYWORD_SHOW, std::string("KEYWORD_SHOW") },
+        { symbol_e::KEYWORD_SHOW_DATABASES, std::string("KEYWORD_SHOW_DATABASES") },
         { symbol_e::KEYWORD_NODE, std::string("KEYWORD_NODE") },
 
         { symbol_e::KEYWORD_INVALID, std::string("KEYWORD_INVALID") },
@@ -98,6 +104,8 @@ namespace engine::query
         { std::string("UPDATE"), symbol_e::KEYWORD_UPDATE },
         { std::string("SET"), symbol_e::KEYWORD_SET },
         { std::string("DELETE"), symbol_e::KEYWORD_DELETE },
+        { std::string("USE"), symbol_e::KEYWORD_USE },
+        { std::string("SHOW DATABASES"), symbol_e::KEYWORD_SHOW_DATABASES },
     };
 };
 

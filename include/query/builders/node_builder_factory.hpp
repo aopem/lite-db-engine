@@ -34,7 +34,7 @@ namespace engine::query
             {
                 if (_builder_map.find(type) == _builder_map.end())
                 {
-                    auto error_msg = "NodeBuilderFactory does not have builder for type '" + symbol_e_map[type] + "'";
+                    auto error_msg = "NodeBuilderFactory does not have AST node builder for type '" + symbol_e_map[type] + "'";
                     BOOST_LOG_TRIVIAL(error) << error_msg;
                     throw std::runtime_error(error_msg);
                 }

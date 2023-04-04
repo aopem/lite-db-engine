@@ -9,5 +9,7 @@
 #include "select_node_builder.hpp"
 #include "update_node_builder.hpp"
 #include "delete_node_builder.hpp"
+#include "use_node_builder.hpp"
+#include "show_databases_node_builder.hpp"
 
 #endif // __BUILDERS_HPP__

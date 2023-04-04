@@ -14,6 +14,8 @@ namespace engine::query
     class DropDatabaseNode;
     class SelectNode;
     class UpdateNode;
+    class UseNode;
+    class ShowDatabasesNode;
 
     class AstNodeVisitor
     {
@@ -25,6 +27,8 @@ namespace engine::query
             virtual void Visit(std::shared_ptr<DropDatabaseNode> node) = 0;
             virtual void Visit(std::shared_ptr<SelectNode> node) = 0;
             virtual void Visit(std::shared_ptr<UpdateNode> node) = 0;
+            virtual void Visit(std::shared_ptr<UseNode> node) = 0;
+            virtual void Visit(std::shared_ptr<ShowDatabasesNode> node) = 0;
     };
 };
 

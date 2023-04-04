@@ -35,6 +35,8 @@ namespace engine::query
             std::shared_ptr<AstNode> ParseSelect(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
             std::shared_ptr<AstNode> ParseUpdate(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
             std::shared_ptr<AstNode> ParseDelete(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseUse(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
+            std::shared_ptr<AstNode> ParseShowDatabases(Lexer& lexer, std::unique_ptr<NodeBuilder> builder);
     };
 };
 

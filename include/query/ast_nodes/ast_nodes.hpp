@@ -8,5 +8,7 @@
 #include "select_node.hpp"
 #include "update_node.hpp"
 #include "delete_node.hpp"
+#include "use_node.hpp"
+#include "show_databases_node.hpp"
 
 #endif // __AST_NODES_HPP__

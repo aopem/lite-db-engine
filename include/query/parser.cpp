@@ -16,6 +16,8 @@ namespace engine::query
         _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
         _builder_factory->RegisterBuilder<UpdateNodeBuilder>(symbol_e::KEYWORD_UPDATE);
         _builder_factory->RegisterBuilder<DeleteNodeBuilder>(symbol_e::KEYWORD_DELETE);
+        _builder_factory->RegisterBuilder<UseNodeBuilder>(symbol_e::KEYWORD_USE);
+        _builder_factory->RegisterBuilder<ShowDatabasesNodeBuilder>(symbol_e::KEYWORD_SHOW_DATABASES);
     }
 
     void Parser::ThrowParserError(std::string expected, std::string actual)
@@ -125,6 +127,14 @@ namespace engine::query
 
             case symbol_e::KEYWORD_DELETE:
                 return ParseDelete(lexer, std::move(builder));
+                break;
+
+            case symbol_e::KEYWORD_USE:
+                return ParseUse(lexer, std::move(builder));
+                break;
+
+            case symbol_e::KEYWORD_SHOW_DATABASES:
+                return ParseShowDatabases(lexer, std::move(builder));
                 break;
 
             default:
@@ -294,6 +304,27 @@ namespace engine::query
         Expect(symbol_e::IDENTIFIER, lexer.Peek());
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseUse(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    {
+        std::unique_ptr<UseNodeBuilder> builder(static_cast<UseNodeBuilder*>(builder_ptr.release()));
+
+        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        auto database = lexer.GetNextToken()->GetValue();
+        builder->SetDatabase(database);
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseShowDatabases(Lexer& lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    {
+        std::unique_ptr<ShowDatabasesNodeBuilder> builder(static_cast<ShowDatabasesNodeBuilder*>(builder_ptr.release()));
+
+        // ensure nothing after SHOW DATABASES command
+        Expect({ symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF }, lexer.Peek());
 
         return builder->Build();
     }
