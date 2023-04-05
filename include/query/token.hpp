@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace engine::query
+namespace litedb
 {
     class Token
     {

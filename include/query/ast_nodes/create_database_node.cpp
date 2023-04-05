@@ -1,6 +1,6 @@
 #include "create_database_node.hpp"
 
-namespace engine::query
+namespace litedb
 {
     void CreateDatabaseNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

@@ -6,7 +6,7 @@
 
 #include <memory>
 
-namespace engine::query
+namespace litedb
 {
     class ShowDatabasesNode : public AstNode, public std::enable_shared_from_this<ShowDatabasesNode>
     {

@@ -13,7 +13,7 @@
 
 #include <boost/log/trivial.hpp>
 
-namespace engine::query
+namespace litedb
 {
     class Parser
     {

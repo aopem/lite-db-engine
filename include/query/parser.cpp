@@ -1,6 +1,6 @@
 #include "parser.hpp"
 
-namespace engine::query
+namespace litedb
 {
     Parser::Parser()
     {

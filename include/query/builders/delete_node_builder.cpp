@@ -1,6 +1,6 @@
 #include "delete_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     DeleteNodeBuilder::DeleteNodeBuilder()
     {

@@ -11,7 +11,7 @@
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
 
-using namespace engine::query;
+using namespace litedb;
 
 void set_logging_filter()
 {
@@ -49,7 +49,7 @@ int main()
         auto ast_node = parser->Parse(lexer);
     }
 
-    std::cout << "[db-engine-lite] SQL Terminal" << std::endl;
+    std::cout << "[lite-db-engine] SQL Terminal" << std::endl;
     std::cout << "-----------------------------" << std::endl;
     while (true)
     {

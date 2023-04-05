@@ -1,6 +1,6 @@
 #include "update_node.hpp"
 
-namespace engine::query
+namespace litedb
 {
     void UpdateNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

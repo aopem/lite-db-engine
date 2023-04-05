@@ -1,6 +1,6 @@
 #include "create_table_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     CreateTableNodeBuilder::CreateTableNodeBuilder()
     {

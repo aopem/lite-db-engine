@@ -1,6 +1,6 @@
 #include "query_executor.hpp"
 
-namespace engine::query
+namespace litedb
 {
     void QueryExecutor::Visit(std::shared_ptr<CreateDatabaseNode> node)
     {

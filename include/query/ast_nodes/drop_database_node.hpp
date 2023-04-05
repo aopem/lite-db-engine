@@ -7,7 +7,7 @@
 #include <string>
 #include <memory>
 
-namespace engine::query
+namespace litedb
 {
     class DropDatabaseNode : public AstNode, public std::enable_shared_from_this<DropDatabaseNode>
     {

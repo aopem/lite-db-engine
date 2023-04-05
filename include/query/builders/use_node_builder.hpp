@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace engine::query
+namespace litedb
 {
     class UseNodeBuilder : public NodeBuilder
     {

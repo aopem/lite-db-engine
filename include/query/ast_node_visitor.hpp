@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace engine::query
+namespace litedb
 {
     // node forward declarations
     class CreateDatabaseNode;

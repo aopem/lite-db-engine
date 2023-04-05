@@ -1,6 +1,6 @@
 #include "drop_database_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     DropDatabaseNodeBuilder::DropDatabaseNodeBuilder()
     {

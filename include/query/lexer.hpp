@@ -14,7 +14,7 @@
 #include <boost/regex.hpp>
 #include <boost/log/trivial.hpp>
 
-namespace engine::query
+namespace litedb
 {
     class Lexer
     {

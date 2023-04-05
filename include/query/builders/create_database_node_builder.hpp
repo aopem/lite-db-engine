@@ -3,7 +3,7 @@
 
 #include "node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     class CreateDatabaseNodeBuilder : public NodeBuilder
     {

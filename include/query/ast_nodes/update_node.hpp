@@ -9,7 +9,7 @@
 #include <vector>
 #include <memory>
 
-namespace engine::query
+namespace litedb
 {
     class UpdateNode : public AstNode, public std::enable_shared_from_this<UpdateNode>
     {

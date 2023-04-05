@@ -1,6 +1,6 @@
 #include "show_databases_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     ShowDatabasesNodeBuilder::ShowDatabasesNodeBuilder()
     {

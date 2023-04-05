@@ -1,6 +1,6 @@
 #include "update_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     UpdateNodeBuilder::UpdateNodeBuilder()
     {

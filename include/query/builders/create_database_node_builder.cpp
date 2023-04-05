@@ -1,6 +1,6 @@
 #include "create_database_node_builder.hpp"
 
-namespace engine::query
+namespace litedb
 {
     CreateDatabaseNodeBuilder::CreateDatabaseNodeBuilder()
     {

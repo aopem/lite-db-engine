@@ -4,7 +4,7 @@
 #include "node_builder.hpp"
 #include "../data.hpp"
 
-namespace engine::query
+namespace litedb
 {
     class CreateTableNodeBuilder : public NodeBuilder
     {
