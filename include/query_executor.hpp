@@ -1,7 +1,7 @@
 #ifndef __QUERY_EXECUTOR_HPP__
 #define __QUERY_EXECUTOR_HPP__
 
-#include "ast_node_visitor.hpp"
+#include "query/ast_node_visitor.hpp"
 
 #include <memory>
 

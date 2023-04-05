@@ -1,7 +1,7 @@
 #include "query/lexer.hpp"
 #include "query/token.hpp"
 #include "query/parser.hpp"
-#include "query/query_executor.hpp"
+#include "query_executor.hpp"
 
 #include <string>
 #include <vector>
@@ -63,6 +63,7 @@ int main()
         Lexer lexer(user_sql_statement);
         auto node = parser->Parse(lexer);
 
+        // execute statement
         node->Accept(executor);
     }
 

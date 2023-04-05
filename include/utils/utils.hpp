@@ -1,6 +1,6 @@
 #include <string>
 
-namespace engine
+namespace litedb
 {
     class Utils
     {
