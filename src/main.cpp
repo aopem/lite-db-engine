@@ -1,5 +1,4 @@
 #include "query/lexer.hpp"
-#include "query/token.hpp"
 #include "query/parser.hpp"
 #include "query_executor.hpp"
 
@@ -25,29 +24,9 @@ int main()
 {
     set_logging_filter();
 
-    std::vector<std::string> statements = {
-        "CREATE DATABASE db;",
-        "UPDATE mytable\nSET col = 120, abc='house';",
-        "SELECT * FROM table",
-        "CREATE   TABLE new_table ( \
-            col1 int,               \
-            test char(8),           \
-            myFloat float,          \
-            apples char(4)          \
-        );",
-        "DROP DATABASE drop_this",
-        "DELETE FROM specialTable;"
-    };
-
     // create dependencies
     auto parser = std::make_unique<Parser>();
     auto executor = std::make_shared<QueryExecutor>();
-
-    for (auto statement : statements)
-    {
-        Lexer lexer(statement);
-        auto ast_node = parser->Parse(lexer);
-    }
 
     std::cout << "[lite-db-engine] SQL Terminal" << std::endl;
     std::cout << "-----------------------------" << std::endl;
