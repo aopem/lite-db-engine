@@ -25,10 +25,12 @@ A SQL statement is passed to a lexer, which creates a series of tokens. The toke
 
 ## Usage
 
+### MacOS (HomeBrew)
+
 ```sh
 brew install boost
-cd cmake
-cmake .. && make
+cd src
+cmake --preset macos-homebrew-intel && cmake --build build
 ./main
 ```
 

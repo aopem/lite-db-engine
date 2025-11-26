@@ -3,14 +3,13 @@ project("db-engine-lite")
 
 # use C++23 standard
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # for debugging
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-# find Boost library
-find_package(Boost 1.81 REQUIRED COMPONENTS
-    log
-)
+# find Boost library using CONFIG mode (modern approach)
+find_package(Boost 1.89 REQUIRED COMPONENTS log CONFIG)
 
 # get all cpp files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "include/*.hpp" "include/*.cpp")

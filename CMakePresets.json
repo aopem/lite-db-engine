@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "macos-homebrew-intel",
+      "inherits": "default",
+      "displayName": "macOS Homebrew (Intel)",
+      "description": "For Intel Macs with Homebrew",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/usr/local/opt/boost/lib/cmake/Boost-1.89.0"
+      }
+    },
+    {
+      "name": "macos-homebrew-arm",
+      "inherits": "default",
+      "displayName": "macOS Homebrew (Apple Silicon)",
+      "description": "For Apple Silicon Macs with Homebrew",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/opt/homebrew/opt/boost/lib/cmake/Boost-1.89.0"
+      }
+    },
+    {
+      "name": "linux",
+      "inherits": "default",
+      "displayName": "Linux",
+      "description": "Default Linux configuration",
+      "binaryDir": "${sourceDir}/build"
+    }
+  ]
+}
