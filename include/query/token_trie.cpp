@@ -22,7 +22,7 @@ namespace litedb
 
     void TokenTrie::Insert(std::string value)
     {
-        BOOST_LOG_TRIVIAL(info) << "Inserting value: " << value;
+        BOOST_LOG_TRIVIAL(debug) << "Inserting value: " << value;
 
         // split value into separate keywords if > 1 word
         std::vector<std::string> keywords;

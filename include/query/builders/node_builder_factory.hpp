@@ -27,10 +27,9 @@ namespace litedb
             {
                 if (_builder_map.find(type) == _builder_map.end())
                 {
-                    auto error_msg = std::format("Invalid SQL statement: NodeBuilderFactory does not have AST node builder for type '{}'",
-                        symbol_e_map[type]);
+                    auto error_msg = std::format("NodeBuilderFactory does not have AST node builder for type '{}'", symbol_e_map[type]);
                     BOOST_LOG_TRIVIAL(error) << error_msg;
-                    throw std::runtime_error(error_msg);
+                    return std::unique_ptr<NodeBuilder>(nullptr);
                 }
 
                 return std::unique_ptr<NodeBuilder>(_builder_map[type]->Clone());

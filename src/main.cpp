@@ -16,7 +16,7 @@ void set_logging_filter()
 {
     boost::log::core::get()->set_filter
     (
-        boost::log::trivial::severity >= boost::log::trivial::info
+        boost::log::trivial::severity >= boost::log::trivial::debug
     );
 }
 
@@ -41,6 +41,11 @@ int main()
         // lex and parse
         Lexer lexer(user_sql_statement);
         auto node = parser->Parse(lexer);
+        if (node == nullptr)
+        {
+            BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
+            continue;
+        }
 
         // execute statement
         node->Accept(executor);

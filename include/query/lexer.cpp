@@ -67,7 +67,7 @@ namespace litedb
         auto value = token->GetValue();
 
         // classify a literal int
-        if (Utils::IsPositiveInt(value) || Utils::IsPositiveInt(value))
+        if (Utils::IsPositiveInt(value) || Utils::IsNegativeInt(value))
         {
             token->SetType(symbol_e::LITERAL_INT);
             return;
@@ -111,6 +111,8 @@ namespace litedb
         else
         {
             // if none of the above, classify as identifier
+            // TODO: add further checks for valid identifier names,
+            // then if invalid, set to INVALID type
             token->SetType(symbol_e::IDENTIFIER);
         }
     }

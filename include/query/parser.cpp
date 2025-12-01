@@ -141,8 +141,8 @@ namespace litedb
 
             default:
                 auto error_msg = "Unknown symbol '" + token->GetValue() + "' found";
-                throw std::invalid_argument(error_msg);
-                break;
+                BOOST_LOG_TRIVIAL(error) << error_msg;
+                return nullptr;
         }
     }
 
