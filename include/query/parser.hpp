@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <unordered_set>
 
 #include <boost/log/trivial.hpp>
@@ -25,7 +26,7 @@ namespace litedb
             std::unique_ptr<NodeBuilderFactory> _builder_factory;
 
             void RegisterBuilders();
-            void ThrowParserError(std::string expected, std::shared_ptr<Token> actual);
+            void ThrowParserError(std::string_view expected, std::shared_ptr<Token> actual);
             bool Expect(symbol_e expected, std::shared_ptr<Token> actual, bool throw_errors = true);
             void Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual);
             data_type_t ParseDataType(Lexer& lexer, std::unique_ptr<CreateTableNodeBuilder>& builder);

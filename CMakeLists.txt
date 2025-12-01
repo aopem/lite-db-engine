@@ -8,6 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # for debugging
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
+# generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # find Boost library using CONFIG mode (modern approach)
 find_package(Boost 1.89 REQUIRED COMPONENTS log CONFIG)
 

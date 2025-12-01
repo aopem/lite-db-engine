@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include <format>
 
 namespace litedb
 {
@@ -20,10 +21,10 @@ namespace litedb
         _builder_factory->RegisterBuilder<ShowDatabasesNodeBuilder>(symbol_e::KEYWORD_SHOW_DATABASES);
     }
 
-    void Parser::ThrowParserError(std::string expected, std::shared_ptr<Token> actual)
+    void Parser::ThrowParserError(std::string_view expected, std::shared_ptr<Token> actual)
     {
-        auto error_msg = "Expected '" + expected + "', got symbol '" + actual->GetValue() + \
-            "' of type '" + symbol_e_map[actual->GetType()] + "'";
+        auto error_msg = std::format("Expected '{}', got symbol '{}' of type '{}'",
+            expected, actual->GetValue(), symbol_e_map[actual->GetType()]);
         BOOST_LOG_TRIVIAL(error) << error_msg;
         throw std::exception();
     }

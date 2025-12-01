@@ -7,6 +7,8 @@
 #include <memory>
 #include <unordered_map>
 #include <typeinfo>
+#include <concepts>
+#include <format>
 
 #include <boost/log/trivial.hpp>
 
@@ -15,18 +17,9 @@ namespace litedb
     class NodeBuilderFactory
     {
         public:
-            template<typename T>
+            template<typename T> requires std::derived_from<T, NodeBuilder>
             void RegisterBuilder(symbol_e type)
             {
-                // if not a type derived from NodeBuilder, cannot register
-                if (!std::is_base_of<NodeBuilder, T>::value)
-                {
-                    auto type_name = std::string(typeid(T).name());
-                    auto error_msg = "NodeBuilderFactory cannot register type '" + type_name + "', which is not derived from NodeBuilder";
-                    BOOST_LOG_TRIVIAL(error) << error_msg;
-                    return;
-                }
-
                 _builder_map[type] = std::make_unique<T>();
             }
 
@@ -34,7 +27,8 @@ namespace litedb
             {
                 if (_builder_map.find(type) == _builder_map.end())
                 {
-                    auto error_msg = "NodeBuilderFactory does not have AST node builder for type '" + symbol_e_map[type] + "'";
+                    auto error_msg = std::format("Invalid SQL statement: NodeBuilderFactory does not have AST node builder for type '{}'",
+                        symbol_e_map[type]);
                     BOOST_LOG_TRIVIAL(error) << error_msg;
                     throw std::runtime_error(error_msg);
                 }

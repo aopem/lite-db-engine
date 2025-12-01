@@ -46,6 +46,12 @@ namespace litedb
         INVALID
     };
 
+    struct SymbolHash {
+        std::size_t operator()(symbol_e s) const noexcept {
+            return std::hash<std::underlying_type_t<symbol_e>>{}(static_cast<std::underlying_type_t<symbol_e>>(s));
+        }
+    };
+
     static std::unordered_map<symbol_e, std::string> symbol_e_map{
         { symbol_e::IDENTIFIER, std::string("IDENTIFIER") },
 

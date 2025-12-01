@@ -36,7 +36,7 @@ cmake --preset macos-homebrew-intel && cmake --build build
 
 ### Terminal Output Example
 
-```
+```txt
 [lite-db-engine] SQL Terminal
 -----------------------------
 >> CREATE DATABASE newdb
