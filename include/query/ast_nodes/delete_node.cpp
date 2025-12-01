@@ -1,6 +1,6 @@
 #include "delete_node.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     void DeleteNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

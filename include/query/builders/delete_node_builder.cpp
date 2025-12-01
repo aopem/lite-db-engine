@@ -1,13 +1,13 @@
 #include "delete_node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     DeleteNodeBuilder::DeleteNodeBuilder()
     {
         _node = std::make_shared<DeleteNode>();
     }
 
-    DeleteNodeBuilder& DeleteNodeBuilder::SetTable(std::string& table)
+    DeleteNodeBuilder &DeleteNodeBuilder::SetTable(std::string &table)
     {
         _node->table = table;
         return *this;

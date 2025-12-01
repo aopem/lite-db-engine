@@ -14,24 +14,24 @@
 #include <boost/regex.hpp>
 #include <boost/log/trivial.hpp>
 
-namespace litedb
+namespace litedb::query
 {
     class Lexer
     {
-        public:
-            Lexer(std::string sql_statement);
-            std::shared_ptr<Token> GetNextToken();
-            std::shared_ptr<Token> Peek();
+    public:
+        Lexer(std::string sql_statement);
+        std::shared_ptr<Token> GetNextToken();
+        std::shared_ptr<Token> Peek();
 
-        private:
-            int _position;
-            std::string _sql_statement;
-            std::vector<std::string> _symbols;
-            std::shared_ptr<TokenTrie> _token_trie;
+    private:
+        int _position;
+        std::string _sql_statement;
+        std::vector<std::string> _symbols;
+        std::shared_ptr<TokenTrie> _token_trie;
 
-            void ClassifyString(std::shared_ptr<Token>& token);
-            void ClassifyMultiwordKeyword(std::shared_ptr<Token>& token);
-            void CleanStatement(std::string& statement);
+        void ClassifyString(std::shared_ptr<Token> &token);
+        void ClassifyMultiwordKeyword(std::shared_ptr<Token> &token);
+        void CleanStatement(std::string &statement);
     };
 };
 

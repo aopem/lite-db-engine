@@ -1,13 +1,13 @@
 #include "use_node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     UseNodeBuilder::UseNodeBuilder()
     {
         _node = std::make_shared<UseNode>();
     }
 
-    UseNodeBuilder& UseNodeBuilder::SetDatabase(std::string& database)
+    UseNodeBuilder &UseNodeBuilder::SetDatabase(std::string &database)
     {
         _node->database = database;
         return *this;

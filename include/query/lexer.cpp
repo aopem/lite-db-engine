@@ -1,12 +1,11 @@
 #include "lexer.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     Lexer::Lexer(
-        std::string sql_statement
-    ) : _sql_statement(sql_statement),
-        _position(0),
-        _symbols()
+        std::string sql_statement) : _sql_statement(sql_statement),
+                                     _position(0),
+                                     _symbols()
     {
         _token_trie = TokenTrie::GetInstance();
 
@@ -62,7 +61,7 @@ namespace litedb
         return next_token;
     }
 
-    void Lexer::ClassifyString(std::shared_ptr<Token>& token)
+    void Lexer::ClassifyString(std::shared_ptr<Token> &token)
     {
         auto value = token->GetValue();
 
@@ -86,7 +85,7 @@ namespace litedb
         // classify an invalid literal string, with mismatched quotes
         if (value.length() >= 2 &&
             ((value[0] == '\'' && value[value.length() - 1] != '\'') ||
-             (value[0] == '"' && value[value.length() - 1] != '"')   ||
+             (value[0] == '"' && value[value.length() - 1] != '"') ||
              (value[0] != '\'' && value[value.length() - 1] == '\'') ||
              (value[0] != '"' && value[value.length() - 1] == '"')))
         {
@@ -117,7 +116,7 @@ namespace litedb
         }
     }
 
-    void Lexer::ClassifyMultiwordKeyword(std::shared_ptr<Token>& token)
+    void Lexer::ClassifyMultiwordKeyword(std::shared_ptr<Token> &token)
     {
         // for processing muti-word keyword tokens
         while (_position < _symbols.size() && token->GetType() == symbol_e::KEYWORD_NODE)
@@ -133,7 +132,7 @@ namespace litedb
         }
     }
 
-    void Lexer::CleanStatement(std::string& sql_statement)
+    void Lexer::CleanStatement(std::string &sql_statement)
     {
         // remove \t, \n, \r
         boost::regex r("[\r\n\t]");

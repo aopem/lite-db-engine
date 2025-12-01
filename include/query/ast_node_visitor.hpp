@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     // node forward declarations
     class CreateDatabaseNode;
@@ -19,17 +19,17 @@ namespace litedb
 
     class AstNodeVisitor
     {
-        public:
-            AstNodeVisitor() = default;
-            virtual ~AstNodeVisitor() = default;
-            virtual void Visit(std::shared_ptr<CreateDatabaseNode> node) = 0;
-            virtual void Visit(std::shared_ptr<CreateTableNode> node) = 0;
-            virtual void Visit(std::shared_ptr<DeleteNode> node) = 0;
-            virtual void Visit(std::shared_ptr<DropDatabaseNode> node) = 0;
-            virtual void Visit(std::shared_ptr<SelectNode> node) = 0;
-            virtual void Visit(std::shared_ptr<UpdateNode> node) = 0;
-            virtual void Visit(std::shared_ptr<UseNode> node) = 0;
-            virtual void Visit(std::shared_ptr<ShowDatabasesNode> node) = 0;
+    public:
+        AstNodeVisitor() = default;
+        virtual ~AstNodeVisitor() = default;
+        virtual void Visit(std::shared_ptr<CreateDatabaseNode> node) = 0;
+        virtual void Visit(std::shared_ptr<CreateTableNode> node) = 0;
+        virtual void Visit(std::shared_ptr<DeleteNode> node) = 0;
+        virtual void Visit(std::shared_ptr<DropDatabaseNode> node) = 0;
+        virtual void Visit(std::shared_ptr<SelectNode> node) = 0;
+        virtual void Visit(std::shared_ptr<UpdateNode> node) = 0;
+        virtual void Visit(std::shared_ptr<UseNode> node) = 0;
+        virtual void Visit(std::shared_ptr<ShowDatabasesNode> node) = 0;
     };
 };
 

@@ -1,6 +1,6 @@
 #include "show_databases_node.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     void ShowDatabasesNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

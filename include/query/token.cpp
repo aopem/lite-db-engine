@@ -1,35 +1,34 @@
 #include "token.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     Token::Token(
         std::string value,
-        symbol_e symbol_t
-    ) : _value(value),
-        _symbol_t(symbol_t) {}
+        symbol_e symbol_t) : _value(value),
+                             _symbol_t(symbol_t) {}
 
     bool Token::IsLiteral()
     {
         return _symbol_t >= symbol_e::LITERAL_INT &&
-            _symbol_t <= symbol_e::LITERAL_STRING;
+               _symbol_t <= symbol_e::LITERAL_STRING;
     }
 
     bool Token::IsDataType()
     {
         return _symbol_t >= symbol_e::DATA_TYPE_INT &&
-            _symbol_t <= symbol_e::DATA_TYPE_CHAR;
+               _symbol_t <= symbol_e::DATA_TYPE_CHAR;
     }
 
     bool Token::IsPunctuator()
     {
         return _symbol_t >= symbol_e::PUNCTUATOR_SEMICOLON &&
-            _symbol_t <= symbol_e::PUNCTUATOR_EQUALS;
+               _symbol_t <= symbol_e::PUNCTUATOR_EQUALS;
     }
 
     bool Token::IsKeyword()
     {
         return _symbol_t >= symbol_e::KEYWORD_CREATE_DATABASE &&
-            _symbol_t <= symbol_e::KEYWORD_NODE;
+               _symbol_t <= symbol_e::KEYWORD_NODE;
     }
 
     bool Token::IsInvalidKeyword()

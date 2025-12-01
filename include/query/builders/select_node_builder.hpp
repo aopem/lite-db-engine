@@ -3,19 +3,19 @@
 
 #include "node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     class SelectNodeBuilder : public NodeBuilder
     {
-        public:
-            SelectNodeBuilder();
-            SelectNodeBuilder& AddColumn(std::string& column);
-            SelectNodeBuilder& SetTable(std::string& table);
-            std::shared_ptr<AstNode> Build() override;
-            std::unique_ptr<NodeBuilder> Clone() override;
+    public:
+        SelectNodeBuilder();
+        SelectNodeBuilder &AddColumn(std::string &column);
+        SelectNodeBuilder &SetTable(std::string &table);
+        std::shared_ptr<AstNode> Build() override;
+        std::unique_ptr<NodeBuilder> Clone() override;
 
-        private:
-            std::shared_ptr<SelectNode> _node;
+    private:
+        std::shared_ptr<SelectNode> _node;
     };
 };
 

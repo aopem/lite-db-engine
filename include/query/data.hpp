@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace litedb
+namespace litedb::query
 {
     enum class data_type_e
     {

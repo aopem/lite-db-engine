@@ -1,25 +1,25 @@
 #include "create_table_node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     CreateTableNodeBuilder::CreateTableNodeBuilder()
     {
         _node = std::make_shared<CreateTableNode>();
     }
 
-    CreateTableNodeBuilder& CreateTableNodeBuilder::SetDatabase(std::string& database)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::SetDatabase(std::string &database)
     {
         _node->database = database;
         return *this;
     }
 
-    CreateTableNodeBuilder& CreateTableNodeBuilder::SetTable(std::string& table)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::SetTable(std::string &table)
     {
         _node->table = table;
         return *this;
     }
 
-    CreateTableNodeBuilder& CreateTableNodeBuilder::AddColumn(std::pair<std::string, data_type_t> column)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::AddColumn(std::pair<std::string, data_type_t> column)
     {
         _node->columns.push_back(column);
         return *this;

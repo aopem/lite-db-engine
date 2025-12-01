@@ -1,19 +1,19 @@
 #include "select_node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     SelectNodeBuilder::SelectNodeBuilder()
     {
         _node = std::make_shared<SelectNode>();
     }
 
-    SelectNodeBuilder& SelectNodeBuilder::AddColumn(std::string& column)
+    SelectNodeBuilder &SelectNodeBuilder::AddColumn(std::string &column)
     {
         _node->columns.push_back(column);
         return *this;
     }
 
-    SelectNodeBuilder& SelectNodeBuilder::SetTable(std::string& table)
+    SelectNodeBuilder &SelectNodeBuilder::SetTable(std::string &table)
     {
         _node->table = table;
         return *this;

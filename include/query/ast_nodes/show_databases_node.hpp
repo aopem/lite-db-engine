@@ -6,12 +6,12 @@
 
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class ShowDatabasesNode : public AstNode, public std::enable_shared_from_this<ShowDatabasesNode>
     {
-        public:
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+    public:
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

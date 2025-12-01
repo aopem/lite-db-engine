@@ -9,15 +9,15 @@
 #include <vector>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class UpdateNode : public AstNode, public std::enable_shared_from_this<UpdateNode>
     {
-        public:
-            std::string table;
-            std::vector<std::pair<std::string, std::shared_ptr<Token>>> entries;
+    public:
+        std::string table;
+        std::vector<std::pair<std::string, std::shared_ptr<Token>>> entries;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

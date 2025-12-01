@@ -7,14 +7,14 @@
 #include <string>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class DeleteNode : public AstNode, public std::enable_shared_from_this<DeleteNode>
     {
-        public:
-            std::string table;
+    public:
+        std::string table;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

@@ -1,45 +1,45 @@
 #include "query_executor.hpp"
 
-namespace litedb
+namespace litedb::query
 {
-    void QueryExecutor::Visit(std::shared_ptr<query::CreateDatabaseNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<CreateDatabaseNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing CREATE DATABASE";
         _storage_engine->CreateDatabase(node->database);
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::CreateTableNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<CreateTableNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing CREATE TABLE";
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::DeleteNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<DeleteNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing DELETE";
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::DropDatabaseNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<DropDatabaseNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing DROP DATABASE";
         _storage_engine->DeleteDatabase(node->database);
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::SelectNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<SelectNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing SELECT";
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::UpdateNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<UpdateNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing UPDATE";
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::UseNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<UseNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing USE";
     }
 
-    void QueryExecutor::Visit(std::shared_ptr<query::ShowDatabasesNode> node)
+    void QueryExecutor::Visit(std::shared_ptr<ShowDatabasesNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing SHOW DATABASES";
     }

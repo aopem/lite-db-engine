@@ -7,25 +7,25 @@
 #include <unordered_map>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class TokenTrie
     {
-        public:
-            TokenTrie();
-            TokenTrie(const TokenTrie&) = delete;
-            TokenTrie& operator=(const TokenTrie&) = delete;
+    public:
+        TokenTrie();
+        TokenTrie(const TokenTrie &) = delete;
+        TokenTrie &operator=(const TokenTrie &) = delete;
 
-            void Insert(std::string value);
-            std::shared_ptr<Token> Search(std::string value);
-            static std::shared_ptr<TokenTrie> GetInstance()
-            {
-                static std::shared_ptr<TokenTrie> instance = std::make_shared<TokenTrie>();
-                return instance;
-            }
+        void Insert(std::string value);
+        std::shared_ptr<Token> Search(std::string value);
+        static std::shared_ptr<TokenTrie> GetInstance()
+        {
+            static std::shared_ptr<TokenTrie> instance = std::make_shared<TokenTrie>();
+            return instance;
+        }
 
-        private:
-            std::shared_ptr<Token> _root;
+    private:
+        std::shared_ptr<Token> _root;
     };
 };
 

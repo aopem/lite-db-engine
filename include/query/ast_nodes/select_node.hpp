@@ -8,15 +8,15 @@
 #include <string>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class SelectNode : public AstNode, public std::enable_shared_from_this<SelectNode>
     {
-        public:
-            std::string table;
-            std::vector<std::string> columns;
+    public:
+        std::string table;
+        std::vector<std::string> columns;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

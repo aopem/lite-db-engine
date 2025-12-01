@@ -5,15 +5,15 @@
 
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class NodeBuilder
     {
-        public:
-            NodeBuilder() = default;
-            virtual ~NodeBuilder() = default;
-            virtual std::shared_ptr<AstNode> Build() = 0;
-            virtual std::unique_ptr<NodeBuilder> Clone() = 0;
+    public:
+        NodeBuilder() = default;
+        virtual ~NodeBuilder() = default;
+        virtual std::shared_ptr<AstNode> Build() = 0;
+        virtual std::unique_ptr<NodeBuilder> Clone() = 0;
     };
 };
 

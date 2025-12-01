@@ -7,14 +7,14 @@
 #include <string>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class DropDatabaseNode : public AstNode, public std::enable_shared_from_this<DropDatabaseNode>
     {
-        public:
-            std::string database;
+    public:
+        std::string database;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

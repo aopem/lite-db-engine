@@ -6,18 +6,18 @@
 
 #include <string>
 
-namespace litedb
+namespace litedb::query
 {
     class UseNodeBuilder : public NodeBuilder
     {
-        public:
-            UseNodeBuilder();
-            UseNodeBuilder& SetDatabase(std::string& database);
-            std::shared_ptr<AstNode> Build() override;
-            std::unique_ptr<NodeBuilder> Clone() override;
+    public:
+        UseNodeBuilder();
+        UseNodeBuilder &SetDatabase(std::string &database);
+        std::shared_ptr<AstNode> Build() override;
+        std::unique_ptr<NodeBuilder> Clone() override;
 
-        private:
-            std::shared_ptr<UseNode> _node;
+    private:
+        std::shared_ptr<UseNode> _node;
     };
 };
 

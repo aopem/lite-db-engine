@@ -1,19 +1,19 @@
 #include "update_node_builder.hpp"
 
-namespace litedb
+namespace litedb::query
 {
     UpdateNodeBuilder::UpdateNodeBuilder()
     {
         _node = std::make_shared<UpdateNode>();
     }
 
-    UpdateNodeBuilder& UpdateNodeBuilder::SetTable(std::string& table)
+    UpdateNodeBuilder &UpdateNodeBuilder::SetTable(std::string &table)
     {
         _node->table = table;
         return *this;
     }
 
-    UpdateNodeBuilder& UpdateNodeBuilder::AddUpdatedEntry(std::pair<std::string, std::shared_ptr<Token>> entry)
+    UpdateNodeBuilder &UpdateNodeBuilder::AddUpdatedEntry(std::pair<std::string, std::shared_ptr<Token>> entry)
     {
         _node->entries.push_back(entry);
         return *this;

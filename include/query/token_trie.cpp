@@ -7,14 +7,14 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/log/trivial.hpp>
 
-namespace litedb
+namespace litedb::query
 {
     TokenTrie::TokenTrie()
     {
         _root = std::make_shared<Token>("", symbol_e::KEYWORD_INVALID);
 
         // initialize tree with symbol_map by inserting all keywords
-        for (auto& [symbol, _] : symbol_map)
+        for (auto &[symbol, _] : symbol_map)
         {
             Insert(symbol);
         }
@@ -31,7 +31,7 @@ namespace litedb
         // add to tree
         auto curr_token = _root;
         std::string curr_word = "";
-        for (auto& word : keywords)
+        for (auto &word : keywords)
         {
             auto type = symbol_e::KEYWORD_NODE;
             curr_word += word;
@@ -43,7 +43,7 @@ namespace litedb
             // insert new token, then advance to new token
             BOOST_LOG_TRIVIAL(debug) << "Inserting: " << curr_word << ", Type: " << symbol_e_map[type];
             auto new_token = std::make_shared<Token>(curr_word, type);
-            curr_token->children.insert({ word, new_token });
+            curr_token->children.insert({word, new_token});
             curr_token = curr_token->children[word];
 
             // add a space to curr_word
@@ -58,7 +58,7 @@ namespace litedb
         boost::split(keywords, value, boost::is_any_of(" "));
 
         auto curr_token = _root;
-        for (auto& word : keywords)
+        for (auto &word : keywords)
         {
             // if keyword does not exist, return an invalid token
             // it is possible this token could be a string literal, etc.

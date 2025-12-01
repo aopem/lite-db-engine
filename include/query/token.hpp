@@ -7,31 +7,30 @@
 #include <unordered_map>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class Token
     {
-        public:
-            std::unordered_map<std::string, std::shared_ptr<Token>> children;
+    public:
+        std::unordered_map<std::string, std::shared_ptr<Token>> children;
 
-            Token(
-                std::string value,
-                symbol_e symbol_t
-            );
-            bool IsLiteral();
-            bool IsDataType();
-            bool IsPunctuator();
-            bool IsKeyword();
-            bool IsKeywordNode();
-            bool IsInvalidKeyword();
-            bool IsIdentifier();
-            symbol_e GetType();
-            std::string GetValue();
-            void SetType(symbol_e symbol_t);
+        Token(
+            std::string value,
+            symbol_e symbol_t);
+        bool IsLiteral();
+        bool IsDataType();
+        bool IsPunctuator();
+        bool IsKeyword();
+        bool IsKeywordNode();
+        bool IsInvalidKeyword();
+        bool IsIdentifier();
+        symbol_e GetType();
+        std::string GetValue();
+        void SetType(symbol_e symbol_t);
 
-        protected:
-            std::string _value;
-            symbol_e _symbol_t;
+    protected:
+        std::string _value;
+        symbol_e _symbol_t;
     };
 };
 

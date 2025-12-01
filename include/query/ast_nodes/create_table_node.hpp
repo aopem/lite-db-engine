@@ -9,16 +9,16 @@
 #include <vector>
 #include <memory>
 
-namespace litedb
+namespace litedb::query
 {
     class CreateTableNode : public AstNode, public std::enable_shared_from_this<CreateTableNode>
     {
-        public:
-            std::string database;
-            std::string table;
-            std::vector<std::pair<std::string, data_type_t>> columns;
+    public:
+        std::string database;
+        std::string table;
+        std::vector<std::pair<std::string, data_type_t>> columns;
 
-            void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
     };
 };
 

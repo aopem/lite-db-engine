@@ -12,31 +12,32 @@
 
 #include <boost/log/trivial.hpp>
 
-namespace litedb
+namespace litedb::query
 {
     class NodeBuilderFactory
     {
-        public:
-            template<typename T> requires std::derived_from<T, NodeBuilder>
-            void RegisterBuilder(symbol_e type)
+    public:
+        template <typename T>
+            requires std::derived_from<T, NodeBuilder>
+        void RegisterBuilder(symbol_e type)
+        {
+            _builder_map[type] = std::make_unique<T>();
+        }
+
+        std::unique_ptr<NodeBuilder> CreateBuilder(symbol_e type)
+        {
+            if (_builder_map.find(type) == _builder_map.end())
             {
-                _builder_map[type] = std::make_unique<T>();
+                auto error_msg = std::format("NodeBuilderFactory does not have AST node builder for type '{}'", symbol_e_map[type]);
+                BOOST_LOG_TRIVIAL(error) << error_msg;
+                return std::unique_ptr<NodeBuilder>(nullptr);
             }
 
-            std::unique_ptr<NodeBuilder> CreateBuilder(symbol_e type)
-            {
-                if (_builder_map.find(type) == _builder_map.end())
-                {
-                    auto error_msg = std::format("NodeBuilderFactory does not have AST node builder for type '{}'", symbol_e_map[type]);
-                    BOOST_LOG_TRIVIAL(error) << error_msg;
-                    return std::unique_ptr<NodeBuilder>(nullptr);
-                }
+            return std::unique_ptr<NodeBuilder>(_builder_map[type]->Clone());
+        }
 
-                return std::unique_ptr<NodeBuilder>(_builder_map[type]->Clone());
-            }
-
-        private:
-            std::unordered_map<symbol_e, std::unique_ptr<NodeBuilder>> _builder_map;
+    private:
+        std::unordered_map<symbol_e, std::unique_ptr<NodeBuilder>> _builder_map;
     };
 };
 
