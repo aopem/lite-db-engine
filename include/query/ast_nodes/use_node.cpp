@@ -1,6 +1,6 @@
 #include "use_node.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     void UseNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

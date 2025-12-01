@@ -2,7 +2,7 @@
 
 #include <boost/log/trivial.hpp>
 
-namespace litedb::stg
+namespace litedb
 {
     StorageEngine::StorageEngine() : _storage_data_dir(_DEFAULT_STORAGE_DIR)
     {

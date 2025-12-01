@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace litedb::query
+namespace litedb
 {
     enum class symbol_e
     {

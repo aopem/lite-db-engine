@@ -1,6 +1,6 @@
 #include "select_node.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     void SelectNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
     {

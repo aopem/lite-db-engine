@@ -23,8 +23,8 @@ int main()
     set_logging_filter();
 
     // create dependencies
-    auto parser = std::make_unique<query::Parser>();
-    auto executor = std::make_shared<query::QueryExecutor>();
+    auto parser = std::make_unique<Parser>();
+    auto executor = std::make_shared<QueryExecutor>();
 
     std::cout << "[lite-db-engine] SQL Terminal" << std::endl;
     std::cout << "-----------------------------" << std::endl;
@@ -37,7 +37,7 @@ int main()
         std::getline(std::cin, user_sql_statement);
 
         // lex and parse
-        query::Lexer lexer(user_sql_statement);
+        Lexer lexer(user_sql_statement);
         auto node = parser->Parse(lexer);
         if (node == nullptr)
         {

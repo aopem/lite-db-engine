@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <string_view>
 
-namespace litedb::stg
+namespace litedb
 {
     class StorageEngine
     {

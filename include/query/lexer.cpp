@@ -1,6 +1,6 @@
 #include "lexer.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     Lexer::Lexer(
         std::string sql_statement) : _sql_statement(sql_statement),

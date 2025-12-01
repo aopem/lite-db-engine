@@ -1,6 +1,6 @@
 #include "use_node_builder.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     UseNodeBuilder::UseNodeBuilder()
     {

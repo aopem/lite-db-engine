@@ -7,7 +7,7 @@
 #include <string>
 #include <memory>
 
-namespace litedb::query
+namespace litedb
 {
     class UseNode : public AstNode, public std::enable_shared_from_this<UseNode>
     {

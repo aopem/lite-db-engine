@@ -1,6 +1,6 @@
 #include "ctx/db_context.hpp"
 
-namespace litedb::ctx
+namespace litedb
 {
     void DbContext::SetCurrentDatabase(std::string_view database)
     {

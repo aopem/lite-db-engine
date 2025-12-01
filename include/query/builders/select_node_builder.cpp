@@ -1,6 +1,6 @@
 #include "select_node_builder.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     SelectNodeBuilder::SelectNodeBuilder()
     {

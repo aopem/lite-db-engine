@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace litedb::query
+namespace litedb
 {
     // forward declaration of visitor
     class AstNodeVisitor;

@@ -3,7 +3,7 @@
 
 #include "node_builder.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     class DeleteNodeBuilder : public NodeBuilder
     {

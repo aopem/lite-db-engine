@@ -1,7 +1,7 @@
 #include "parser.hpp"
 #include <format>
 
-namespace litedb::query
+namespace litedb
 {
     Parser::Parser()
     {

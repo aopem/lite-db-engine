@@ -8,7 +8,7 @@
 
 #include <boost/log/trivial.hpp>
 
-namespace litedb::query
+namespace litedb
 {
     class QueryExecutor : public AstNodeVisitor
     {
@@ -23,7 +23,7 @@ namespace litedb::query
         virtual void Visit(std::shared_ptr<ShowDatabasesNode> node) override;
 
     private:
-        std::unique_ptr<stg::StorageEngine> _storage_engine = std::make_unique<stg::StorageEngine>();
+        std::unique_ptr<StorageEngine> _storage_engine = std::make_unique<StorageEngine>();
     };
 };
 

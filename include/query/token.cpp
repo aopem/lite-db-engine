@@ -1,6 +1,6 @@
 #include "token.hpp"
 
-namespace litedb::query
+namespace litedb
 {
     Token::Token(
         std::string value,
