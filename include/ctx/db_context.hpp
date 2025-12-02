@@ -20,4 +20,4 @@ namespace litedb
     };
 }
 
-#endif // !__DB_CONTEXT_HPP__
+#endif // __DB_CONTEXT_HPP__
