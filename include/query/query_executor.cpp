@@ -37,6 +37,7 @@ namespace litedb
     void QueryExecutor::Visit(std::shared_ptr<UseNode> node)
     {
         BOOST_LOG_TRIVIAL(info) << "Executing USE";
+        _db_context->SetCurrentDatabase(node->database);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<ShowDatabasesNode> node)

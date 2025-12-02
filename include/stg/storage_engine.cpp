@@ -22,7 +22,7 @@ namespace litedb
         {
             // create empty directory for database
             std::filesystem::create_directory(db_dir);
-            BOOST_LOG_TRIVIAL(info) << "Created storage file at path: " << db_dir;
+            BOOST_LOG_TRIVIAL(debug) << "Created storage file at path: " << db_dir;
         }
         else
         {
@@ -45,11 +45,35 @@ namespace litedb
             }
 
             fclose(file);
-            BOOST_LOG_TRIVIAL(info) << "Created storage file at path: " << table_file;
+            BOOST_LOG_TRIVIAL(debug) << "Created storage file at path: " << table_file;
         }
         else
         {
             BOOST_LOG_TRIVIAL(debug) << "Storage file at path: " << table_file << " already exists, skipping creation.";
+        }
+    }
+
+    void StorageEngine::WriteToTable(std::string_view table, std::string_view data)
+    {
+        auto table_file = _storage_data_dir / table;
+
+        // append data to storage data file
+        if (std::filesystem::exists(table_file))
+        {
+            auto file = fopen(table_file.c_str(), "a");
+            if (file == nullptr)
+            {
+                BOOST_LOG_TRIVIAL(error) << "Failed to open storage file at path: " << table_file << " for writing.";
+                return;
+            }
+
+            fwrite(data.data(), sizeof(char), data.size(), file);
+            fclose(file);
+            BOOST_LOG_TRIVIAL(debug) << "Wrote data to storage file at path: " << table_file;
+        }
+        else
+        {
+            BOOST_LOG_TRIVIAL(warning) << "Storage file at path: " << table_file << " does not exist, cannot write data.";
         }
     }
 
@@ -61,11 +85,27 @@ namespace litedb
         if (std::filesystem::exists(db_dir))
         {
             std::filesystem::remove(db_dir);
-            BOOST_LOG_TRIVIAL(info) << "Deleted storage file at path: " << db_dir;
+            BOOST_LOG_TRIVIAL(debug) << "Deleted storage file at path: " << db_dir;
         }
         else
         {
             BOOST_LOG_TRIVIAL(warning) << "Storage file at path: " << db_dir << " does not exist, cannot delete.";
+        }
+    }
+
+    void StorageEngine::DeleteTable(std::string_view table)
+    {
+        auto table_file = _storage_data_dir / table;
+
+        // delete a storage data file
+        if (std::filesystem::exists(table_file))
+        {
+            std::filesystem::remove(table_file);
+            BOOST_LOG_TRIVIAL(debug) << "Deleted storage file at path: " << table_file;
+        }
+        else
+        {
+            BOOST_LOG_TRIVIAL(warning) << "Storage file at path: " << table_file << " does not exist, cannot delete.";
         }
     }
 }

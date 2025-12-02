@@ -1,6 +1,7 @@
 #ifndef __QUERY_EXECUTOR_HPP__
 #define __QUERY_EXECUTOR_HPP__
 
+#include "ctx/db_context.hpp"
 #include "stg/storage_engine.hpp"
 #include "query/ast_node_visitor.hpp"
 
@@ -24,6 +25,7 @@ namespace litedb
 
     private:
         std::unique_ptr<StorageEngine> _storage_engine = std::make_unique<StorageEngine>();
+        std::unique_ptr<DbContext> _db_context = std::make_unique<DbContext>();
     };
 };
 
