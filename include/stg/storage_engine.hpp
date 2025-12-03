@@ -14,7 +14,7 @@ namespace litedb
 
         void CreateDatabase(std::string_view database);
         void CreateTable(std::string_view database, std::string_view table);
-        void WriteToTable(std::string_view table, std::string_view data);
+        void WriteToTable(std::string_view database, std::string_view table, std::string_view data);
         void DeleteDatabase(std::string_view database);
         void DeleteTable(std::string_view table);
 

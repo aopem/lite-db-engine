@@ -53,9 +53,9 @@ namespace litedb
         }
     }
 
-    void StorageEngine::WriteToTable(std::string_view table, std::string_view data)
+    void StorageEngine::WriteToTable(std::string_view database, std::string_view table, std::string_view data)
     {
-        auto table_file = _storage_data_dir / table;
+        auto table_file = _storage_data_dir / database / table;
 
         // append data to storage data file
         if (std::filesystem::exists(table_file))

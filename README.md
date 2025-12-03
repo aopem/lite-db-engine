@@ -8,9 +8,9 @@ A simple database engine written in C++.
 
 Composed of:
 
-* Lexer
-* Parser
-* Query Executor
+-   Lexer
+-   Parser
+-   Query Executor
 
 A SQL statement is passed to a lexer, which creates a series of tokens. The tokens are then moved to the parser, which generates Abstract Syntax Tree (AST) nodes. Then, the Query Executor uses these AST nodes to interact with the Storage Engine and actually execute the database commands.
 
@@ -20,18 +20,39 @@ A SQL statement is passed to a lexer, which creates a series of tokens. The toke
 
 ## Dependencies
 
-* CMake >= 3.25
-* Boost >= 1.81
+-   CMake >= 3.25
+-   Boost >= 1.81
 
 ## Usage
 
 ### MacOS (HomeBrew)
 
+#### Build and Run Main Executable
+
 ```sh
 brew install boost
-cd src
 cmake --preset macos-homebrew-intel && cmake --build build
-./main
+./build/main
+```
+
+#### Build and Run Tests
+
+To compile test executables, enable the `BUILD_TESTS` option:
+
+```sh
+cmake --preset macos-homebrew-intel -DBUILD_TESTS=ON && cmake --build build
+```
+
+Run all tests using CTest:
+
+```sh
+cd build && ctest
+```
+
+Or run individual test executables:
+
+```sh
+./build/test_create_table
 ```
 
 ### Terminal Output Example
