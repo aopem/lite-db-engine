@@ -16,8 +16,8 @@ namespace litedb
         LiteDbEngine() = default;
         ~LiteDbEngine() = default;
 
-        void Run(std::istream &input_stream, std::ostream &output_stream);
         void Execute(const std::string &sql);
+        void RunInteractive();
 
     private:
         std::unique_ptr<Parser> _parser = std::make_unique<Parser>();
