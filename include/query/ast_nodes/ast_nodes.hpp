@@ -4,6 +4,7 @@
 #include "create_database_node.hpp"
 #include "create_table_node.hpp"
 #include "drop_database_node.hpp"
+#include "insert_into_node.hpp"
 #include "select_node.hpp"
 #include "update_node.hpp"
 #include "delete_node.hpp"

@@ -18,14 +18,15 @@ namespace litedb
         virtual void Visit(std::shared_ptr<CreateTableNode> node) override;
         virtual void Visit(std::shared_ptr<DeleteNode> node) override;
         virtual void Visit(std::shared_ptr<DropDatabaseNode> node) override;
+        virtual void Visit(std::shared_ptr<InsertIntoNode> node) override;
         virtual void Visit(std::shared_ptr<SelectNode> node) override;
         virtual void Visit(std::shared_ptr<UpdateNode> node) override;
         virtual void Visit(std::shared_ptr<UseNode> node) override;
         virtual void Visit(std::shared_ptr<ShowDatabasesNode> node) override;
 
     private:
-        std::unique_ptr<StorageEngine> _storage_engine = std::make_unique<StorageEngine>();
-        std::unique_ptr<DbContext> _db_context = std::make_unique<DbContext>();
+        StorageEngine _storage_engine;
+        DbContext _db_context;
     };
 };
 

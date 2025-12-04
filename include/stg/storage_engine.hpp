@@ -12,6 +12,8 @@ namespace litedb
         StorageEngine();
         ~StorageEngine() = default;
 
+        std::vector<std::string> ListDatabases();
+        std::vector<std::string> ListTables(std::string_view database);
         void CreateDatabase(std::string_view database);
         void CreateTable(std::string_view database, std::string_view table);
         void WriteToTable(std::string_view database, std::string_view table, std::string_view data);

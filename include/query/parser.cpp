@@ -14,6 +14,7 @@ namespace litedb
         _builder_factory->RegisterBuilder<CreateDatabaseNodeBuilder>(symbol_e::KEYWORD_CREATE_DATABASE);
         _builder_factory->RegisterBuilder<DropDatabaseNodeBuilder>(symbol_e::KEYWORD_DROP_DATABASE);
         _builder_factory->RegisterBuilder<CreateTableNodeBuilder>(symbol_e::KEYWORD_CREATE_TABLE);
+        _builder_factory->RegisterBuilder<InsertIntoNodeBuilder>(symbol_e::KEYWORD_INSERT_INTO);
         _builder_factory->RegisterBuilder<SelectNodeBuilder>(symbol_e::KEYWORD_SELECT);
         _builder_factory->RegisterBuilder<UpdateNodeBuilder>(symbol_e::KEYWORD_UPDATE);
         _builder_factory->RegisterBuilder<DeleteNodeBuilder>(symbol_e::KEYWORD_DELETE);
@@ -119,6 +120,10 @@ namespace litedb
             return ParseCreateTable(lexer, std::move(builder));
             break;
 
+        case symbol_e::KEYWORD_INSERT_INTO:
+            return ParseInsertInto(lexer, std::move(builder));
+            break;
+
         case symbol_e::KEYWORD_SELECT:
             return ParseSelect(lexer, std::move(builder));
             break;
@@ -208,6 +213,77 @@ namespace litedb
         // read final semicolon
         Expect(symbol_e::PUNCTUATOR_SEMICOLON, lexer.Peek());
         lexer.GetNextToken();
+
+        return builder->Build();
+    }
+
+    std::shared_ptr<AstNode> Parser::ParseInsertInto(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    {
+        // get proper builder
+        std::unique_ptr<InsertIntoNodeBuilder> builder(static_cast<InsertIntoNodeBuilder *>(builder_ptr.release()));
+
+        // get table name
+        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        auto table = lexer.GetNextToken()->GetValue();
+        builder->SetTable(table);
+
+        // check for optional column list
+        if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_LPAREN)
+        {
+            // consume left parenthesis
+            lexer.GetNextToken();
+
+            // parse column names
+            while (lexer.Peek()->IsIdentifier() ||
+                   lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+            {
+                Expect(symbol_e::IDENTIFIER, lexer.Peek());
+                auto column = lexer.GetNextToken()->GetValue();
+                builder->AddColumn(column);
+
+                // read comma or closing paren
+                Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());
+                if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+                {
+                    lexer.GetNextToken();
+                }
+            }
+
+            // consume right parenthesis
+            Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek());
+            lexer.GetNextToken();
+        }
+
+        // expect VALUES keyword
+        Expect(symbol_e::KEYWORD_VALUES, lexer.Peek());
+        lexer.GetNextToken();
+
+        // consume left parenthesis for values
+        Expect(symbol_e::PUNCTUATOR_LPAREN, lexer.Peek());
+        lexer.GetNextToken();
+
+        // parse values
+        while (lexer.Peek()->IsLiteral() ||
+               lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+        {
+            Expect({symbol_e::LITERAL_INT, symbol_e::LITERAL_STRING}, lexer.Peek());
+            auto value = lexer.GetNextToken();
+            builder->AddValue(value);
+
+            // read comma or closing paren
+            Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());
+            if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+            {
+                lexer.GetNextToken();
+            }
+        }
+
+        // consume right parenthesis
+        Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek());
+        lexer.GetNextToken();
+
+        // read final semicolon
+        Expect({symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek());
 
         return builder->Build();
     }

@@ -12,6 +12,7 @@ namespace litedb
     class CreateTableNode;
     class DeleteNode;
     class DropDatabaseNode;
+    class InsertIntoNode;
     class SelectNode;
     class UpdateNode;
     class UseNode;
@@ -26,6 +27,7 @@ namespace litedb
         virtual void Visit(std::shared_ptr<CreateTableNode> node) = 0;
         virtual void Visit(std::shared_ptr<DeleteNode> node) = 0;
         virtual void Visit(std::shared_ptr<DropDatabaseNode> node) = 0;
+        virtual void Visit(std::shared_ptr<InsertIntoNode> node) = 0;
         virtual void Visit(std::shared_ptr<SelectNode> node) = 0;
         virtual void Visit(std::shared_ptr<UpdateNode> node) = 0;
         virtual void Visit(std::shared_ptr<UseNode> node) = 0;

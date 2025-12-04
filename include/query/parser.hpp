@@ -33,6 +33,7 @@ namespace litedb
         std::shared_ptr<AstNode> ParseCreateDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         std::shared_ptr<AstNode> ParseDropDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         std::shared_ptr<AstNode> ParseCreateTable(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
+        std::shared_ptr<AstNode> ParseInsertInto(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         std::shared_ptr<AstNode> ParseSelect(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         std::shared_ptr<AstNode> ParseUpdate(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         std::shared_ptr<AstNode> ParseDelete(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);

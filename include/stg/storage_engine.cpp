@@ -14,6 +14,46 @@ namespace litedb
         }
     };
 
+    std::vector<std::string> StorageEngine::ListDatabases()
+    {
+        std::vector<std::string> databases;
+
+        BOOST_LOG_TRIVIAL(debug) << "Listing databases in data directory: " << _storage_data_dir;
+        for (auto &entry : std::filesystem::directory_iterator(_storage_data_dir))
+        {
+            if (entry.is_directory())
+            {
+                databases.push_back(entry.path().filename().string());
+                BOOST_LOG_TRIVIAL(debug) << "Found database: " << entry.path().filename().string();
+            }
+        }
+
+        return databases;
+    }
+
+    std::vector<std::string> StorageEngine::ListTables(std::string_view database)
+    {
+        std::vector<std::string> tables;
+        auto db_dir = _storage_data_dir / database;
+        if (!std::filesystem::exists(db_dir) || !std::filesystem::is_directory(db_dir))
+        {
+            BOOST_LOG_TRIVIAL(warning) << "Database directory: " << db_dir << " does not exist.";
+            return tables;
+        }
+
+        BOOST_LOG_TRIVIAL(debug) << "Listing tables in database directory: " << db_dir;
+        for (auto &entry : std::filesystem::directory_iterator(db_dir))
+        {
+            if (entry.is_regular_file())
+            {
+                tables.push_back(entry.path().filename().string());
+                BOOST_LOG_TRIVIAL(debug) << "Found table: " << entry.path().filename().string();
+            }
+        }
+
+        return tables;
+    }
+
     void StorageEngine::CreateDatabase(std::string_view database)
     {
         // add "database" to end of storage data dir

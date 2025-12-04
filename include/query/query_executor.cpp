@@ -4,44 +4,83 @@ namespace litedb
 {
     void QueryExecutor::Visit(std::shared_ptr<CreateDatabaseNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing CREATE DATABASE";
-        _storage_engine->CreateDatabase(node->database);
+        BOOST_LOG_TRIVIAL(debug) << "Executing CREATE DATABASE";
+        _storage_engine.CreateDatabase(node->database);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<CreateTableNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing CREATE TABLE";
+        BOOST_LOG_TRIVIAL(debug) << "Executing CREATE TABLE";
+        _storage_engine.CreateTable(_db_context.GetCurrentDatabase(), node->table);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<DeleteNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing DELETE";
+        BOOST_LOG_TRIVIAL(debug) << "Executing DELETE";
     }
 
     void QueryExecutor::Visit(std::shared_ptr<DropDatabaseNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing DROP DATABASE";
-        _storage_engine->DeleteDatabase(node->database);
+        BOOST_LOG_TRIVIAL(debug) << "Executing DROP DATABASE";
+        _storage_engine.DeleteDatabase(node->database);
+    }
+
+    void QueryExecutor::Visit(std::shared_ptr<InsertIntoNode> node)
+    {
+        BOOST_LOG_TRIVIAL(debug) << "Executing INSERT INTO";
+
+        std::string database = std::string(_db_context.GetCurrentDatabase());
+        if (database.empty())
+        {
+            BOOST_LOG_TRIVIAL(error) << "No database selected. Use 'USE <database>' first.";
+            return;
+        }
+
+        // Build data string from values
+        std::string data = "";
+        for (size_t i = 0; i < node->values.size(); i++)
+        {
+            data += node->values[i]->GetValue();
+            if (i < node->values.size() - 1)
+            {
+                data += ",";
+            }
+        }
+        data += "\n";
+
+        _storage_engine.WriteToTable(database, node->table, data);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<SelectNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing SELECT";
+        BOOST_LOG_TRIVIAL(debug) << "Executing SELECT";
     }
 
     void QueryExecutor::Visit(std::shared_ptr<UpdateNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing UPDATE";
+        BOOST_LOG_TRIVIAL(debug) << "Executing UPDATE";
     }
 
     void QueryExecutor::Visit(std::shared_ptr<UseNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing USE";
-        _db_context->SetCurrentDatabase(node->database);
+        BOOST_LOG_TRIVIAL(debug) << "Executing USE";
+        _db_context.SetCurrentDatabase(node->database);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<ShowDatabasesNode> node)
     {
-        BOOST_LOG_TRIVIAL(info) << "Executing SHOW DATABASES";
+        BOOST_LOG_TRIVIAL(debug) << "Executing SHOW DATABASES";
+        auto databases = _storage_engine.ListDatabases();
+        if (databases.empty())
+        {
+            BOOST_LOG_TRIVIAL(info) << "No databases found.";
+            return;
+        }
+
+        BOOST_LOG_TRIVIAL(info) << "Databases:";
+        for (const auto &db : databases)
+        {
+            BOOST_LOG_TRIVIAL(info) << " - " << db;
+        }
     }
 }
