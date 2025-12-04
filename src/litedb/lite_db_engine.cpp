@@ -41,7 +41,7 @@ namespace litedb
             if (node == nullptr)
             {
                 BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
-                return;
+                continue;
             }
 
             // execute statement
