@@ -22,52 +22,45 @@ namespace litedb
         _builder_factory->RegisterBuilder<ShowDatabasesNodeBuilder>(symbol_e::KEYWORD_SHOW_DATABASES);
     }
 
-    void Parser::ThrowParserError(std::string_view expected, std::shared_ptr<Token> actual)
+    void Parser::SetError(std::string_view expected, std::shared_ptr<Token> actual)
     {
-        auto error_msg = std::format("Expected '{}', got symbol '{}' of type '{}'",
-                                     expected, actual->GetValue(), symbol_e_map[actual->GetType()]);
-        BOOST_LOG_TRIVIAL(error) << error_msg;
-        throw std::exception();
+        _last_error = std::format("Expected '{}', got symbol '{}' of type '{}'",
+                                  expected, actual->GetValue(), symbol_e_map[actual->GetType()]);
+        BOOST_LOG_TRIVIAL(error) << _last_error;
     }
 
-    bool Parser::Expect(symbol_e expected, std::shared_ptr<Token> actual, bool throw_errors)
+    bool Parser::Expect(symbol_e expected, std::shared_ptr<Token> actual)
     {
         if (actual->GetType() != expected)
         {
-            if (throw_errors)
-            {
-                ThrowParserError(symbol_e_map[expected], actual);
-            }
-
+            SetError(symbol_e_map[expected], actual);
             return false;
         }
-
         return true;
     }
 
-    void Parser::Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual)
+    bool Parser::Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual)
     {
-        bool symbol_matched = false;
         for (auto symbol : expected)
         {
-            symbol_matched = symbol_matched || Expect(symbol, actual, false);
-        }
-
-        if (!symbol_matched)
-        {
-            std::string expected_elements = "";
-            for (auto symbol : expected)
+            if (actual->GetType() == symbol)
             {
-                expected_elements += symbol_e_map[symbol] + " ";
+                return true;
             }
-
-            // trim for output, then throw error
-            Utils::RightTrim(expected_elements);
-            ThrowParserError(expected_elements, actual);
         }
+
+        std::string expected_elements = "";
+        for (auto symbol : expected)
+        {
+            expected_elements += symbol_e_map[symbol] + " ";
+        }
+
+        Utils::RightTrim(expected_elements);
+        SetError(expected_elements, actual);
+        return false;
     }
 
-    data_type_t Parser::ParseDataType(Lexer &lexer, std::unique_ptr<CreateTableNodeBuilder> &builder)
+    Result<data_type_t> Parser::ParseDataType(Lexer &lexer)
     {
         auto token = lexer.GetNextToken();
         data_type_t data_type;
@@ -93,14 +86,14 @@ namespace litedb
             break;
 
         default:
-            ThrowParserError("data type identifier", token);
-            break;
+            SetError("data type identifier", token);
+            return Result<data_type_t>::Error(_last_error);
         }
 
-        return data_type;
+        return Result<data_type_t>::Ok(data_type);
     }
 
-    std::shared_ptr<AstNode> Parser::Parse(Lexer &lexer)
+    Result<std::shared_ptr<AstNode>> Parser::Parse(Lexer &lexer)
     {
         auto token = lexer.GetNextToken();
 
@@ -110,120 +103,135 @@ namespace litedb
         {
         case symbol_e::KEYWORD_CREATE_DATABASE:
             return ParseCreateDatabase(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_DROP_DATABASE:
             return ParseDropDatabase(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_CREATE_TABLE:
             return ParseCreateTable(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_INSERT_INTO:
             return ParseInsertInto(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_SELECT:
             return ParseSelect(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_UPDATE:
             return ParseUpdate(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_DELETE:
             return ParseDelete(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_USE:
             return ParseUse(lexer, std::move(builder));
-            break;
 
         case symbol_e::KEYWORD_SHOW_DATABASES:
             return ParseShowDatabases(lexer, std::move(builder));
-            break;
 
         default:
             auto error_msg = "Unknown symbol '" + token->GetValue() + "' found";
             BOOST_LOG_TRIVIAL(error) << error_msg;
-            return nullptr;
+            return Result<std::shared_ptr<AstNode>>::Error(error_msg);
         }
     }
 
-    std::shared_ptr<AstNode> Parser::ParseCreateDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseCreateDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<CreateDatabaseNodeBuilder> builder(static_cast<CreateDatabaseNodeBuilder *>(builder_ptr.release()));
 
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseDropDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseDropDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<DropDatabaseNodeBuilder> builder(static_cast<DropDatabaseNodeBuilder *>(builder_ptr.release()));
 
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseCreateTable(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseCreateTable(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<CreateTableNodeBuilder> builder(static_cast<CreateTableNodeBuilder *>(builder_ptr.release()));
 
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
 
         // get table name
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        // consume left parentheses
-        Expect(symbol_e::PUNCTUATOR_LPAREN, lexer.Peek());
+        if (!Expect(symbol_e::PUNCTUATOR_LPAREN, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         lexer.GetNextToken();
 
-        // parse table columns
-        while (lexer.Peek()->IsIdentifier() ||
-               lexer.Peek()->IsDataType())
+        while (lexer.Peek()->IsIdentifier() || lexer.Peek()->IsDataType())
         {
-            // read identifier
-            Expect(symbol_e::IDENTIFIER, lexer.Peek());
+            if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             auto column = lexer.GetNextToken()->GetValue();
 
-            // read data type
             if (!lexer.Peek()->IsDataType())
             {
-                ThrowParserError("column data type", lexer.Peek());
+                SetError("column data type", lexer.Peek());
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
             }
-            auto data_type = ParseDataType(lexer, builder);
 
-            // add column to create table node
-            builder->AddColumn(column, data_type);
+            auto data_type_result = ParseDataType(lexer);
+            if (!data_type_result.success)
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(data_type_result.error_message);
+            }
 
-            // read comma before next column type/closing right paren
-            Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());
+            builder->AddColumn(column, data_type_result.value);
+            if (!Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
+
             lexer.GetNextToken();
         }
 
-        // read final semicolon
-        Expect(symbol_e::PUNCTUATOR_SEMICOLON, lexer.Peek());
+        if (!Expect(symbol_e::PUNCTUATOR_SEMICOLON, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         lexer.GetNextToken();
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseInsertInto(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseInsertInto(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
-        // get proper builder
         std::unique_ptr<InsertIntoNodeBuilder> builder(static_cast<InsertIntoNodeBuilder *>(builder_ptr.release()));
 
-        // get table name
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
@@ -234,83 +242,104 @@ namespace litedb
             lexer.GetNextToken();
 
             // parse column names
-            while (lexer.Peek()->IsIdentifier() ||
-                   lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+            while (lexer.Peek()->IsIdentifier() || lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
             {
-                Expect(symbol_e::IDENTIFIER, lexer.Peek());
+                if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+                {
+                    return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+                }
                 auto column = lexer.GetNextToken()->GetValue();
                 builder->AddColumn(column);
 
-                // read comma or closing paren
-                Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());
+                if (!Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek()))
+                {
+                    return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+                }
+
                 if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
                 {
                     lexer.GetNextToken();
                 }
             }
 
-            // consume right parenthesis
-            Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek());
+            if (!Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             lexer.GetNextToken();
         }
 
-        // expect VALUES keyword
-        Expect(symbol_e::KEYWORD_VALUES, lexer.Peek());
-        lexer.GetNextToken();
-
-        // consume left parenthesis for values
-        Expect(symbol_e::PUNCTUATOR_LPAREN, lexer.Peek());
-        lexer.GetNextToken();
-
-        // parse values
-        while (lexer.Peek()->IsLiteral() ||
-               lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+        if (!Expect(symbol_e::KEYWORD_VALUES, lexer.Peek()))
         {
-            Expect({symbol_e::LITERAL_INT, symbol_e::LITERAL_STRING}, lexer.Peek());
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+        lexer.GetNextToken();
+
+        if (!Expect(symbol_e::PUNCTUATOR_LPAREN, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+        lexer.GetNextToken();
+
+        while (lexer.Peek()->IsLiteral() || lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+        {
+            if (!Expect({symbol_e::LITERAL_INT, symbol_e::LITERAL_STRING}, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             auto value = lexer.GetNextToken();
             builder->AddValue(value);
 
-            // read comma or closing paren
-            Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());
+            if (!Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
+
             if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
             {
                 lexer.GetNextToken();
             }
         }
 
-        // consume right parenthesis
-        Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek());
+        if (!Expect(symbol_e::PUNCTUATOR_RPAREN, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         lexer.GetNextToken();
 
-        // read final semicolon
-        Expect({symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek());
+        if (!Expect({symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseSelect(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseSelect(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
-        // get proper builder
         std::unique_ptr<SelectNodeBuilder> builder(static_cast<SelectNodeBuilder *>(builder_ptr.release()));
 
         if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_ASTERISK)
         {
-            // create select node with all columns selected
             auto column = lexer.GetNextToken()->GetValue();
             builder->AddColumn(column);
         }
         else
         {
-            // add all column identifiers
-            while (lexer.Peek()->IsIdentifier() ||
-                   lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
+            while (lexer.Peek()->IsIdentifier() || lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
             {
-                Expect(symbol_e::IDENTIFIER, lexer.Peek());
+                if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+                {
+                    return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+                }
                 auto column = lexer.GetNextToken()->GetValue();
                 builder->AddColumn(column);
 
-                // read comma token if present
-                Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::KEYWORD_FROM}, lexer.Peek());
+                if (!Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::KEYWORD_FROM}, lexer.Peek()))
+                {
+                    return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+                }
+
                 if (lexer.Peek()->GetType() == symbol_e::PUNCTUATOR_COMMA)
                 {
                     lexer.GetNextToken();
@@ -318,92 +347,119 @@ namespace litedb
             }
         }
 
-        // get FROM token
-        Expect(symbol_e::KEYWORD_FROM, lexer.Peek());
+        if (!Expect(symbol_e::KEYWORD_FROM, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         lexer.GetNextToken();
 
-        // then get table identifier
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseUpdate(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseUpdate(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
-        // get proper builder
         std::unique_ptr<UpdateNodeBuilder> builder(static_cast<UpdateNodeBuilder *>(builder_ptr.release()));
 
         // get table name
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        // read SET token
-        Expect(symbol_e::KEYWORD_SET, lexer.Peek());
+        if (!Expect(symbol_e::KEYWORD_SET, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         lexer.GetNextToken();
 
-        while (lexer.Peek()->IsIdentifier() ||
-               lexer.Peek()->IsPunctuator() ||
-               lexer.Peek()->IsLiteral())
+        while (lexer.Peek()->IsIdentifier() || lexer.Peek()->IsPunctuator() || lexer.Peek()->IsLiteral())
         {
-            // read column name
-            Expect(symbol_e::IDENTIFIER, lexer.Peek());
+            if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             auto column_name = lexer.GetNextToken()->GetValue();
 
-            // read '=' sign
-            Expect(symbol_e::PUNCTUATOR_EQUALS, lexer.Peek());
+            if (!Expect(symbol_e::PUNCTUATOR_EQUALS, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             lexer.GetNextToken();
 
-            // read column new value
-            Expect({symbol_e::LITERAL_INT, symbol_e::LITERAL_STRING}, lexer.Peek());
+            if (!Expect({symbol_e::LITERAL_INT, symbol_e::LITERAL_STRING}, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
             auto value = lexer.GetNextToken();
 
             builder->AddUpdatedEntry({column_name, value});
 
-            // read comma before next value, or ending semicolon/EOF
-            Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF},
-                   lexer.Peek());
+            if (!Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek()))
+            {
+                return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+            }
+
             lexer.GetNextToken();
         }
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseDelete(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseDelete(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<DeleteNodeBuilder> builder(static_cast<DeleteNodeBuilder *>(builder_ptr.release()));
 
-        // get FROM token
-        Expect(symbol_e::KEYWORD_FROM, lexer.Peek());
+        if (!Expect(symbol_e::KEYWORD_FROM, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
         lexer.GetNextToken();
 
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto table = lexer.GetNextToken()->GetValue();
         builder->SetTable(table);
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseUse(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseUse(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<UseNodeBuilder> builder(static_cast<UseNodeBuilder *>(builder_ptr.release()));
 
-        Expect(symbol_e::IDENTIFIER, lexer.Peek());
+        if (!Expect(symbol_e::IDENTIFIER, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
+
         auto database = lexer.GetNextToken()->GetValue();
         builder->SetDatabase(database);
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 
-    std::shared_ptr<AstNode> Parser::ParseShowDatabases(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
+    Result<std::shared_ptr<AstNode>> Parser::ParseShowDatabases(Lexer &lexer, std::unique_ptr<NodeBuilder> builder_ptr)
     {
         std::unique_ptr<ShowDatabasesNodeBuilder> builder(static_cast<ShowDatabasesNodeBuilder *>(builder_ptr.release()));
 
-        // ensure nothing after SHOW DATABASES command
-        Expect({symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek());
+        if (!Expect({symbol_e::PUNCTUATOR_SEMICOLON, symbol_e::PUNCTUATOR_EOF}, lexer.Peek()))
+        {
+            return Result<std::shared_ptr<AstNode>>::Error(_last_error);
+        }
 
-        return builder->Build();
+        return Result<std::shared_ptr<AstNode>>::Ok(builder->Build());
     }
 };

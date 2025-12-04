@@ -7,19 +7,20 @@
 
 namespace litedb
 {
-    void LiteDbEngine::Execute(const std::string &sql)
+    Result<void> LiteDbEngine::Execute(const std::string &sql)
     {
         // lex and parse
         Lexer lexer{sql};
-        auto node = _parser.Parse(lexer);
-        if (node == nullptr)
+        auto parse_result = _parser.Parse(lexer);
+        if (!parse_result.success)
         {
-            BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
-            return;
+            BOOST_LOG_TRIVIAL(error) << "Parse error: " << parse_result.error_message;
+            return Result<void>::Error(parse_result.error_message);
         }
 
         // execute statement
-        node->Accept(_executor);
+        parse_result.value->Accept(_executor);
+        return Result<void>::Ok();
     }
 
     void LiteDbEngine::RunInteractive()
@@ -35,17 +36,12 @@ namespace litedb
             std::getline(std::cin, user_sql_statement);
             std::cout << std::endl;
 
-            // lex and parse
-            Lexer lexer{user_sql_statement};
-            auto node = _parser.Parse(lexer);
-            if (node == nullptr)
+            // execute (errors are handled internally)
+            auto result = Execute(user_sql_statement);
+            if (!result.success)
             {
-                BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
-                continue;
+                std::cout << "Error: " << result.error_message << std::endl;
             }
-
-            // execute statement
-            node->Accept(_executor);
         }
     }
 };

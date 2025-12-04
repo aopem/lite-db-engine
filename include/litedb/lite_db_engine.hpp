@@ -3,6 +3,7 @@
 
 #include "query/parser.hpp"
 #include "query/query_executor.hpp"
+#include "utils/result.hpp"
 
 #include <istream>
 #include <ostream>
@@ -16,7 +17,7 @@ namespace litedb
         LiteDbEngine() = default;
         ~LiteDbEngine() = default;
 
-        void Execute(const std::string &sql);
+        Result<void> Execute(const std::string &sql);
         void RunInteractive();
 
     private:
