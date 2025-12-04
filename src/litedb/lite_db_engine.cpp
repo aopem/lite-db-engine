@@ -15,7 +15,7 @@ namespace litedb
         output_stream << std::endl;
 
         // lex and parse
-        Lexer lexer(user_sql_statement);
+        Lexer lexer{user_sql_statement};
         auto node = _parser->Parse(lexer);
         if (node == nullptr)
         {

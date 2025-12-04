@@ -21,7 +21,7 @@ A SQL statement is passed to a lexer, which creates a series of tokens. The toke
 ## Dependencies
 
 -   CMake >= 3.25
--   Boost >= 1.81
+-   Boost >= 1.89
 
 ## Usage
 

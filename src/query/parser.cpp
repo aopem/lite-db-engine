@@ -203,7 +203,7 @@ namespace litedb
             auto data_type = ParseDataType(lexer, builder);
 
             // add column to create table node
-            builder->AddColumn({column, data_type});
+            builder->AddColumn(column, data_type);
 
             // read comma before next column type/closing right paren
             Expect({symbol_e::PUNCTUATOR_COMMA, symbol_e::PUNCTUATOR_RPAREN}, lexer.Peek());

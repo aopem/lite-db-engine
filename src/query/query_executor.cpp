@@ -5,13 +5,17 @@ namespace litedb
     void QueryExecutor::Visit(std::shared_ptr<CreateDatabaseNode> node)
     {
         BOOST_LOG_TRIVIAL(debug) << "Executing CREATE DATABASE";
-        _storage_engine.CreateDatabase(node->database);
+        _storage_engine.Databases().Create(node->database);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<CreateTableNode> node)
     {
         BOOST_LOG_TRIVIAL(debug) << "Executing CREATE TABLE";
-        _storage_engine.CreateTable(_db_context.GetCurrentDatabase(), node->table);
+        _storage_engine.Tables().Create(_db_context.GetCurrentDatabase(), node->table);
+        _storage_engine.Tables().CreateSchema(
+            _db_context.GetCurrentDatabase(),
+            node->table,
+            node->schema);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<DeleteNode> node)
@@ -22,7 +26,7 @@ namespace litedb
     void QueryExecutor::Visit(std::shared_ptr<DropDatabaseNode> node)
     {
         BOOST_LOG_TRIVIAL(debug) << "Executing DROP DATABASE";
-        _storage_engine.DeleteDatabase(node->database);
+        _storage_engine.Databases().Delete(node->database);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<InsertIntoNode> node)
@@ -48,7 +52,7 @@ namespace litedb
         }
         data += "\n";
 
-        _storage_engine.WriteToTable(database, node->table, data);
+        _storage_engine.Data().Write(database, node->table, data);
     }
 
     void QueryExecutor::Visit(std::shared_ptr<SelectNode> node)
@@ -70,7 +74,7 @@ namespace litedb
     void QueryExecutor::Visit(std::shared_ptr<ShowDatabasesNode> node)
     {
         BOOST_LOG_TRIVIAL(debug) << "Executing SHOW DATABASES";
-        auto databases = _storage_engine.ListDatabases();
+        auto databases = _storage_engine.Databases().List();
         if (databases.empty())
         {
             BOOST_LOG_TRIVIAL(info) << "No databases found.";

@@ -12,7 +12,7 @@ namespace litedb
         CreateTableNodeBuilder();
         CreateTableNodeBuilder &SetDatabase(std::string &database);
         CreateTableNodeBuilder &SetTable(std::string &database);
-        CreateTableNodeBuilder &AddColumn(std::pair<std::string, data_type_t> column);
+        CreateTableNodeBuilder &AddColumn(std::string &column, data_type_t data_type);
         std::shared_ptr<AstNode> Build() override;
         std::unique_ptr<NodeBuilder> Clone() override;
 
