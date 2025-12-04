@@ -14,7 +14,7 @@ namespace litedb
         ~DataManager() = default;
 
         void Write(std::string_view database, std::string_view table, std::string_view data);
-        std::string Read(std::string_view database, std::string_view table);
+        std::string Read(std::string_view database, std::string_view table) const;
 
     private:
         std::filesystem::path _base_dir;

@@ -32,7 +32,7 @@ namespace litedb
         BOOST_LOG_TRIVIAL(debug) << "Wrote data to table at path: " << table_file;
     }
 
-    std::string DataManager::Read(std::string_view database, std::string_view table)
+    std::string DataManager::Read(std::string_view database, std::string_view table) const
     {
         auto table_file = _base_dir / database / table;
 

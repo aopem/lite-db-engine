@@ -12,7 +12,7 @@ namespace litedb
     {
     public:
         UseNodeBuilder();
-        UseNodeBuilder &SetDatabase(std::string &database);
+        UseNodeBuilder &SetDatabase(const std::string &database);
         std::shared_ptr<AstNode> Build() override;
         std::unique_ptr<NodeBuilder> Clone() override;
 

@@ -19,7 +19,7 @@ namespace litedb
         std::string table;
         TableSchema schema;
 
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

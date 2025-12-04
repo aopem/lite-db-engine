@@ -14,10 +14,10 @@ namespace litedb
         TableManager(std::filesystem::path base_dir);
         ~TableManager() = default;
 
-        std::vector<std::string> List(std::string_view database);
+        std::vector<std::string> List(std::string_view database) const;
         void Create(std::string_view database, std::string_view table);
         void Delete(std::string_view database, std::string_view table);
-        bool Exists(std::string_view database, std::string_view table);
+        bool Exists(std::string_view database, std::string_view table) const;
 
     private:
         std::filesystem::path _base_dir;

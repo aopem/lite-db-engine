@@ -7,7 +7,7 @@ namespace litedb
     DbManager::DbManager(std::filesystem::path base_dir)
         : _base_dir(base_dir) {}
 
-    std::vector<std::string> DbManager::List()
+    std::vector<std::string> DbManager::List() const
     {
         std::vector<std::string> databases;
 
@@ -52,7 +52,7 @@ namespace litedb
         BOOST_LOG_TRIVIAL(debug) << "Deleted database at path: " << db_dir;
     }
 
-    bool DbManager::Exists(std::string_view database)
+    bool DbManager::Exists(std::string_view database) const
     {
         auto db_dir = _base_dir / database;
         return std::filesystem::exists(db_dir) && std::filesystem::is_directory(db_dir);

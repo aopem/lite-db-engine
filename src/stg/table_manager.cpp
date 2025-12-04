@@ -7,7 +7,7 @@ namespace litedb
     TableManager::TableManager(std::filesystem::path base_dir)
         : _base_dir(base_dir) {}
 
-    std::vector<std::string> TableManager::List(std::string_view database)
+    std::vector<std::string> TableManager::List(std::string_view database) const
     {
         std::vector<std::string> tables;
         auto db_dir = _base_dir / database;
@@ -65,7 +65,7 @@ namespace litedb
         BOOST_LOG_TRIVIAL(debug) << "Deleted table at path: " << table_file;
     }
 
-    bool TableManager::Exists(std::string_view database, std::string_view table)
+    bool TableManager::Exists(std::string_view database, std::string_view table) const
     {
         auto table_file = _base_dir / database / table;
         return std::filesystem::exists(table_file) && std::filesystem::is_regular_file(table_file);

@@ -7,36 +7,36 @@ namespace litedb
         symbol_e symbol_t) : _value(value),
                              _symbol_t(symbol_t) {}
 
-    bool Token::IsLiteral()
+    bool Token::IsLiteral() const
     {
         return _symbol_t >= symbol_e::LITERAL_INT &&
                _symbol_t <= symbol_e::LITERAL_STRING;
     }
 
-    bool Token::IsDataType()
+    bool Token::IsDataType() const
     {
         return _symbol_t >= symbol_e::DATA_TYPE_INT &&
                _symbol_t <= symbol_e::DATA_TYPE_CHAR;
     }
 
-    bool Token::IsPunctuator()
+    bool Token::IsPunctuator() const
     {
         return _symbol_t >= symbol_e::PUNCTUATOR_SEMICOLON &&
                _symbol_t <= symbol_e::PUNCTUATOR_EQUALS;
     }
 
-    bool Token::IsKeyword()
+    bool Token::IsKeyword() const
     {
         return _symbol_t >= symbol_e::KEYWORD_CREATE_DATABASE &&
                _symbol_t <= symbol_e::KEYWORD_NODE;
     }
 
-    bool Token::IsInvalidKeyword()
+    bool Token::IsInvalidKeyword() const
     {
         return _symbol_t == symbol_e::KEYWORD_INVALID;
     }
 
-    bool Token::IsIdentifier()
+    bool Token::IsIdentifier() const
     {
         return _symbol_t == symbol_e::IDENTIFIER;
     }

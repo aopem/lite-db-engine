@@ -14,7 +14,7 @@ namespace litedb
     public:
         std::string database;
 
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

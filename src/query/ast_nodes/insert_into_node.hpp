@@ -18,7 +18,7 @@ namespace litedb
         std::vector<std::string> columns;
         std::vector<std::shared_ptr<Token>> values;
 
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

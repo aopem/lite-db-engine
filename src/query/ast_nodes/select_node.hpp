@@ -16,7 +16,7 @@ namespace litedb
         std::string table;
         std::vector<std::string> columns;
 
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

@@ -9,7 +9,7 @@ namespace litedb
     {
     public:
         DropDatabaseNodeBuilder();
-        DropDatabaseNodeBuilder &SetDatabase(std::string &database);
+        DropDatabaseNodeBuilder &SetDatabase(const std::string &database);
         std::shared_ptr<AstNode> Build() override;
         std::unique_ptr<NodeBuilder> Clone() override;
 

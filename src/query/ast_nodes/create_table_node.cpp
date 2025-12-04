@@ -2,7 +2,7 @@
 
 namespace litedb
 {
-    void CreateTableNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
+    void CreateTableNode::Accept(const std::shared_ptr<AstNodeVisitor> &visitor)
     {
         visitor->Visit(shared_from_this());
     }

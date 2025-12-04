@@ -17,13 +17,12 @@ namespace litedb
         Token(
             std::string value,
             symbol_e symbol_t);
-        bool IsLiteral();
-        bool IsDataType();
-        bool IsPunctuator();
-        bool IsKeyword();
-        bool IsKeywordNode();
-        bool IsInvalidKeyword();
-        bool IsIdentifier();
+        bool IsLiteral() const;
+        bool IsDataType() const;
+        bool IsPunctuator() const;
+        bool IsKeyword() const;
+        bool IsInvalidKeyword() const;
+        bool IsIdentifier() const;
         symbol_e GetType() const;
         std::string GetValue() const;
         void SetType(symbol_e symbol_t);

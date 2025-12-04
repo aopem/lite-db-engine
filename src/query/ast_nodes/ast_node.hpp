@@ -15,7 +15,7 @@ namespace litedb
     public:
         AstNode() = default;
         virtual ~AstNode() = default;
-        virtual void Accept(std::shared_ptr<AstNodeVisitor> visitor) = 0;
+        virtual void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) = 0;
     };
 };
 

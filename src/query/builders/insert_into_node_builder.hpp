@@ -10,9 +10,9 @@ namespace litedb
     {
     public:
         InsertIntoNodeBuilder();
-        InsertIntoNodeBuilder &SetTable(std::string &table);
-        InsertIntoNodeBuilder &AddColumn(std::string &column);
-        InsertIntoNodeBuilder &AddValue(std::shared_ptr<Token> value);
+        InsertIntoNodeBuilder &SetTable(const std::string &table);
+        InsertIntoNodeBuilder &AddColumn(const std::string &column);
+        InsertIntoNodeBuilder &AddValue(const std::shared_ptr<Token> &value);
         std::shared_ptr<AstNode> Build() override;
         std::unique_ptr<NodeBuilder> Clone() override;
 

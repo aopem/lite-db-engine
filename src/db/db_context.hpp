@@ -13,7 +13,7 @@ namespace litedb
         ~DbContext() = default;
 
         void SetCurrentDatabase(std::string_view database);
-        std::string_view GetCurrentDatabase();
+        std::string_view GetCurrentDatabase() const;
 
     private:
         std::string _current_database = "";

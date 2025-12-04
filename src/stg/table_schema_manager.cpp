@@ -39,7 +39,7 @@ namespace litedb
         BOOST_LOG_TRIVIAL(debug) << "Created schema file at path: " << schema_file;
     }
 
-    std::optional<TableSchema> TableSchemaManager::Read(std::string_view database, std::string_view table)
+    std::optional<TableSchema> TableSchemaManager::Read(std::string_view database, std::string_view table) const
     {
         auto schema_file = GetSchemaPath(database, table);
         if (!std::filesystem::exists(schema_file))
@@ -78,7 +78,7 @@ namespace litedb
         return schema;
     }
 
-    bool TableSchemaManager::Exists(std::string_view database, std::string_view table)
+    bool TableSchemaManager::Exists(std::string_view database, std::string_view table) const
     {
         auto schema_file = GetSchemaPath(database, table);
         return std::filesystem::exists(schema_file) && std::filesystem::is_regular_file(schema_file);

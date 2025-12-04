@@ -7,7 +7,7 @@ namespace litedb
         _node = std::make_shared<CreateDatabaseNode>();
     }
 
-    CreateDatabaseNodeBuilder &CreateDatabaseNodeBuilder::SetDatabase(std::string &database)
+    CreateDatabaseNodeBuilder &CreateDatabaseNodeBuilder::SetDatabase(const std::string &database)
     {
         _node->database = database;
         return *this;

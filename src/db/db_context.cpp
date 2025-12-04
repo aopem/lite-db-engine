@@ -10,7 +10,7 @@ namespace litedb
         _current_database = database;
     }
 
-    std::string_view DbContext::GetCurrentDatabase()
+    std::string_view DbContext::GetCurrentDatabase() const
     {
         return _current_database;
     }

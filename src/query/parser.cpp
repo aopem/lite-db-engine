@@ -22,14 +22,14 @@ namespace litedb
         _builder_factory->RegisterBuilder<ShowDatabasesNodeBuilder>(symbol_e::KEYWORD_SHOW_DATABASES);
     }
 
-    void Parser::SetError(std::string_view expected, std::shared_ptr<Token> actual)
+    void Parser::SetError(std::string_view expected, const std::shared_ptr<Token> &actual)
     {
         _last_error = std::format("Expected '{}', got symbol '{}' of type '{}'",
                                   expected, actual->GetValue(), symbol_e_map[actual->GetType()]);
         BOOST_LOG_TRIVIAL(error) << _last_error;
     }
 
-    bool Parser::Expect(symbol_e expected, std::shared_ptr<Token> actual)
+    bool Parser::Expect(symbol_e expected, const std::shared_ptr<Token> &actual)
     {
         if (actual->GetType() != expected)
         {
@@ -39,9 +39,9 @@ namespace litedb
         return true;
     }
 
-    bool Parser::Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual)
+    bool Parser::Expect(const std::unordered_set<symbol_e> &expected, const std::shared_ptr<Token> &actual)
     {
-        for (auto symbol : expected)
+        for (const auto &symbol : expected)
         {
             if (actual->GetType() == symbol)
             {
@@ -50,7 +50,7 @@ namespace litedb
         }
 
         std::string expected_elements = "";
-        for (auto symbol : expected)
+        for (const auto &symbol : expected)
         {
             expected_elements += symbol_e_map[symbol] + " ";
         }

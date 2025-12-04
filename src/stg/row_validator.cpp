@@ -14,7 +14,7 @@ namespace litedb
 
     ValidationResult RowValidator::Validate(
         const std::vector<std::string> &columns,
-        const std::vector<std::shared_ptr<Token>> &values)
+        const std::vector<std::shared_ptr<Token>> &values) const
     {
         // if no columns specified, validate against schema order
         if (columns.empty())
@@ -67,7 +67,7 @@ namespace litedb
 
     ValidationResult RowValidator::ValidateColumnCount(
         const std::vector<std::string> &columns,
-        const std::vector<std::shared_ptr<Token>> &values)
+        const std::vector<std::shared_ptr<Token>> &values) const
     {
         if (columns.size() != values.size())
         {
@@ -78,7 +78,7 @@ namespace litedb
         return ValidationResult::Ok();
     }
 
-    ValidationResult RowValidator::ValidateColumnExists(std::string_view column_name)
+    ValidationResult RowValidator::ValidateColumnExists(std::string_view column_name) const
     {
         if (!_schema.HasColumn(std::string(column_name)))
         {
@@ -90,7 +90,7 @@ namespace litedb
     ValidationResult RowValidator::ValidateColumnType(
         std::string_view column_name,
         const data_type_t &expected_type,
-        const Token &value)
+        const Token &value) const
     {
         if (!ValidTypeForColumn(value.GetType(), expected_type.name))
         {
@@ -106,7 +106,7 @@ namespace litedb
     ValidationResult RowValidator::ValidateColumnLength(
         std::string_view column_name,
         const data_type_t &expected_type,
-        const Token &value)
+        const Token &value) const
     {
         if (expected_type.name != data_type_e::CHAR)
         {
@@ -126,7 +126,7 @@ namespace litedb
 
     ValidationResult RowValidator::ValidateColumn(
         const std::string &column_name,
-        const Token &value)
+        const Token &value) const
     {
         auto col_exists = ValidateColumnExists(column_name);
         if (!col_exists.success)
@@ -156,7 +156,7 @@ namespace litedb
         return ValidationResult::Ok();
     }
 
-    bool RowValidator::ValidTypeForColumn(symbol_e token_type, data_type_e expected_type)
+    bool RowValidator::ValidTypeForColumn(symbol_e token_type, data_type_e expected_type) const
     {
         switch (expected_type)
         {

@@ -11,7 +11,7 @@ namespace litedb
     class ShowDatabasesNode : public AstNode, public std::enable_shared_from_this<ShowDatabasesNode>
     {
     public:
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

@@ -9,8 +9,8 @@ namespace litedb
     {
     public:
         SelectNodeBuilder();
-        SelectNodeBuilder &AddColumn(std::string &column);
-        SelectNodeBuilder &SetTable(std::string &table);
+        SelectNodeBuilder &AddColumn(const std::string &column);
+        SelectNodeBuilder &SetTable(const std::string &table);
         std::shared_ptr<AstNode> Build() override;
         std::unique_ptr<NodeBuilder> Clone() override;
 

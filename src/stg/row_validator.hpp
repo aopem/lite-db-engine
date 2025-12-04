@@ -25,31 +25,31 @@ namespace litedb
     class RowValidator
     {
     public:
-        RowValidator(TableSchema &schema) : _schema(schema) {}
+        RowValidator(const TableSchema &schema) : _schema(schema) {}
 
         ValidationResult Validate(
             const std::vector<std::string> &columns,
-            const std::vector<std::shared_ptr<Token>> &values);
+            const std::vector<std::shared_ptr<Token>> &values) const;
 
     private:
         TableSchema _schema;
 
         ValidationResult ValidateColumnCount(
             const std::vector<std::string> &columns,
-            const std::vector<std::shared_ptr<Token>> &values);
-        ValidationResult ValidateColumnExists(std::string_view column_name);
+            const std::vector<std::shared_ptr<Token>> &values) const;
+        ValidationResult ValidateColumnExists(std::string_view column_name) const;
         ValidationResult ValidateColumnType(
             std::string_view column_name,
             const data_type_t &expected_type,
-            const Token &value);
+            const Token &value) const;
         ValidationResult ValidateColumnLength(
             std::string_view column_name,
             const data_type_t &expected_type,
-            const Token &value);
+            const Token &value) const;
         ValidationResult ValidateColumn(
             const std::string &column_name,
-            const Token &value);
-        bool ValidTypeForColumn(symbol_e token_type, data_type_e expected_type);
+            const Token &value) const;
+        bool ValidTypeForColumn(symbol_e token_type, data_type_e expected_type) const;
     };
 }
 

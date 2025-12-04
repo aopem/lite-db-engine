@@ -7,19 +7,19 @@ namespace litedb
         _node = std::make_shared<InsertIntoNode>();
     }
 
-    InsertIntoNodeBuilder &InsertIntoNodeBuilder::SetTable(std::string &table)
+    InsertIntoNodeBuilder &InsertIntoNodeBuilder::SetTable(const std::string &table)
     {
         _node->table = table;
         return *this;
     }
 
-    InsertIntoNodeBuilder &InsertIntoNodeBuilder::AddColumn(std::string &column)
+    InsertIntoNodeBuilder &InsertIntoNodeBuilder::AddColumn(const std::string &column)
     {
         _node->columns.push_back(column);
         return *this;
     }
 
-    InsertIntoNodeBuilder &InsertIntoNodeBuilder::AddValue(std::shared_ptr<Token> value)
+    InsertIntoNodeBuilder &InsertIntoNodeBuilder::AddValue(const std::shared_ptr<Token> &value)
     {
         _node->values.push_back(value);
         return *this;

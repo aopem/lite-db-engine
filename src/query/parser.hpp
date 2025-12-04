@@ -28,9 +28,9 @@ namespace litedb
         std::string _last_error;
 
         void RegisterBuilders();
-        void SetError(std::string_view expected, std::shared_ptr<Token> actual);
-        bool Expect(symbol_e expected, std::shared_ptr<Token> actual);
-        bool Expect(std::unordered_set<symbol_e> expected, std::shared_ptr<Token> actual);
+        void SetError(std::string_view expected, const std::shared_ptr<Token> &actual);
+        bool Expect(symbol_e expected, const std::shared_ptr<Token> &actual);
+        bool Expect(const std::unordered_set<symbol_e> &expected, const std::shared_ptr<Token> &actual);
         Result<data_type_t> ParseDataType(Lexer &lexer);
         Result<std::shared_ptr<AstNode>> ParseCreateDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);
         Result<std::shared_ptr<AstNode>> ParseDropDatabase(Lexer &lexer, std::unique_ptr<NodeBuilder> builder);

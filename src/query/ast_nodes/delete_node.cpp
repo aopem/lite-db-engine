@@ -2,7 +2,7 @@
 
 namespace litedb
 {
-    void DeleteNode::Accept(std::shared_ptr<AstNodeVisitor> visitor)
+    void DeleteNode::Accept(const std::shared_ptr<AstNodeVisitor> &visitor)
     {
         visitor->Visit(shared_from_this());
     }

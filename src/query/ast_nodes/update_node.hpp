@@ -17,7 +17,7 @@ namespace litedb
         std::string table;
         std::vector<std::pair<std::string, std::shared_ptr<Token>>> entries;
 
-        void Accept(std::shared_ptr<AstNodeVisitor> visitor) override;
+        void Accept(const std::shared_ptr<AstNodeVisitor> &visitor) override;
     };
 };
 

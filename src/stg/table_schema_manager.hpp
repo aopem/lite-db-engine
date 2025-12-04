@@ -17,8 +17,8 @@ namespace litedb
         ~TableSchemaManager() = default;
 
         void Write(std::string_view database, std::string_view table, const TableSchema &schema);
-        std::optional<TableSchema> Read(std::string_view database, std::string_view table);
-        bool Exists(std::string_view database, std::string_view table);
+        std::optional<TableSchema> Read(std::string_view database, std::string_view table) const;
+        bool Exists(std::string_view database, std::string_view table) const;
         void Delete(std::string_view database, std::string_view table);
 
     private:

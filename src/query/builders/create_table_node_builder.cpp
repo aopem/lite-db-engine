@@ -7,19 +7,19 @@ namespace litedb
         _node = std::make_shared<CreateTableNode>();
     }
 
-    CreateTableNodeBuilder &CreateTableNodeBuilder::SetDatabase(std::string &database)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::SetDatabase(const std::string &database)
     {
         _node->database = database;
         return *this;
     }
 
-    CreateTableNodeBuilder &CreateTableNodeBuilder::SetTable(std::string &table)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::SetTable(const std::string &table)
     {
         _node->table = table;
         return *this;
     }
 
-    CreateTableNodeBuilder &CreateTableNodeBuilder::AddColumn(std::string &column, data_type_t data_type)
+    CreateTableNodeBuilder &CreateTableNodeBuilder::AddColumn(const std::string &column, data_type_t data_type)
     {
         _node->schema.AddColumn(column, data_type);
         return *this;
