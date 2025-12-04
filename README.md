@@ -27,12 +27,12 @@ A SQL statement is passed to a lexer, which creates a series of tokens. The toke
 
 ### MacOS (HomeBrew)
 
-#### Build and Run Main Executable
+#### Build and Run LiteDB Terminal
 
 ```sh
 brew install boost
 cmake --preset macos-homebrew-intel && cmake --build build
-./build/main
+./build/litedb_terminal
 ```
 
 #### Build and Run Tests
@@ -55,7 +55,7 @@ Or run individual test executables:
 ./build/test_create_table
 ```
 
-### Terminal Output Example
+### LiteDB Terminal Output Example
 
 ```txt
 [lite-db-engine] SQL Terminal
