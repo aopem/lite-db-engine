@@ -10,5 +10,8 @@ int main()
     engine.Execute("USE testdb;");
     engine.Execute("CREATE TABLE testtable (id INT, age INT, name CHAR(100));");
 
+    // cleanup
+    engine.Execute("DROP DATABASE testdb;");
+
     return 0;
 }

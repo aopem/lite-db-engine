@@ -1,7 +1,7 @@
 #ifndef __QUERY_EXECUTOR_HPP__
 #define __QUERY_EXECUTOR_HPP__
 
-#include "ctx/db_context.hpp"
+#include "db/db_context.hpp"
 #include "stg/storage_engine.hpp"
 #include "query/ast_node_visitor.hpp"
 

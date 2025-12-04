@@ -6,7 +6,7 @@
 namespace litedb
 {
     TableSchemaManager::TableSchemaManager(std::filesystem::path base_dir)
-        : _base_dir(std::move(base_dir)) {}
+        : _base_dir(base_dir) {}
 
     std::filesystem::path TableSchemaManager::GetSchemaPath(std::string_view database, std::string_view table) const
     {
@@ -34,6 +34,7 @@ namespace litedb
             fprintf(file, "%s,%d,%zu\n", column.name.c_str(),
                     static_cast<int>(column.type.name), column.type.length);
         }
+
         fclose(file);
         BOOST_LOG_TRIVIAL(debug) << "Created schema file at path: " << schema_file;
     }
@@ -59,7 +60,6 @@ namespace litedb
         char column_name[128];
         int data_type_int;
         size_t length;
-
         while (fgets(buffer, sizeof(buffer), file))
         {
             // read up to 127 chars for name, int for type, size_t for length
