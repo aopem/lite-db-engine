@@ -20,7 +20,7 @@ namespace litedb
         void RunInteractive();
 
     private:
-        std::unique_ptr<Parser> _parser = std::make_unique<Parser>();
+        Parser _parser;
         std::shared_ptr<QueryExecutor> _executor = std::make_shared<QueryExecutor>();
     };
 };

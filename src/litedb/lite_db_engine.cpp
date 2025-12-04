@@ -10,8 +10,8 @@ namespace litedb
     void LiteDbEngine::Execute(const std::string &sql)
     {
         // lex and parse
-        Lexer lexer(sql);
-        auto node = _parser->Parse(lexer);
+        Lexer lexer{sql};
+        auto node = _parser.Parse(lexer);
         if (node == nullptr)
         {
             BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
@@ -37,7 +37,7 @@ namespace litedb
 
             // lex and parse
             Lexer lexer{user_sql_statement};
-            auto node = _parser->Parse(lexer);
+            auto node = _parser.Parse(lexer);
             if (node == nullptr)
             {
                 BOOST_LOG_TRIVIAL(error) << "Unable to parse SQL statement, invalid syntax. Skipping execution.";
