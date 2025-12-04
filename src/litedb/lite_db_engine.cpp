@@ -33,7 +33,11 @@ namespace litedb
 
             // read input
             std::cout << ">> ";
-            std::getline(std::cin, user_sql_statement);
+            if (!std::getline(std::cin, user_sql_statement))
+            {
+                std::cout << "\nExiting..." << std::endl;
+                break;
+            }
             std::cout << std::endl;
 
             // execute (errors are handled internally)
