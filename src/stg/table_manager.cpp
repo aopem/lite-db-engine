@@ -71,7 +71,7 @@ namespace litedb
 
         for (auto &[column_name, data_type] : schema.columns)
         {
-            fprintf(file, "%s,%d,%zu", column_name.c_str(), data_type.name, data_type.length);
+            fprintf(file, "%s,%d,%zu\n", column_name.c_str(), data_type.name, data_type.length);
         }
         fclose(file);
         BOOST_LOG_TRIVIAL(debug) << "Created schema file at path: " << schema_file;
