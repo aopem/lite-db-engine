@@ -16,6 +16,7 @@ namespace litedb
         // initialize managers
         _db_manager = std::make_unique<DbManager>(_storage_data_dir);
         _table_manager = std::make_unique<TableManager>(_storage_data_dir);
+        _table_schema_manager = std::make_unique<TableSchemaManager>(_storage_data_dir);
         _data_manager = std::make_unique<DataManager>(_storage_data_dir);
     }
 }

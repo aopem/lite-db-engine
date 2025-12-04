@@ -8,9 +8,7 @@
 namespace litedb
 {
     DataManager::DataManager(std::filesystem::path base_dir)
-        : _base_dir(std::move(base_dir))
-    {
-    }
+        : _base_dir(std::move(base_dir)) {}
 
     void DataManager::Write(std::string_view database, std::string_view table, std::string_view data)
     {

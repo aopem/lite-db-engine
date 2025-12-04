@@ -1,5 +1,4 @@
 #include "stg/table_manager.hpp"
-#include "stg/table_schema.hpp"
 
 #include <boost/log/trivial.hpp>
 
@@ -51,30 +50,6 @@ namespace litedb
 
         fclose(file);
         BOOST_LOG_TRIVIAL(debug) << "Created table at path: " << table_file;
-    }
-
-    void TableManager::CreateSchema(std::string_view database, std::string &table, TableSchema &schema)
-    {
-        auto schema_file = _base_dir / database / (table + ".schema");
-        if (std::filesystem::exists(schema_file))
-        {
-            BOOST_LOG_TRIVIAL(debug) << "Schema file at path: " << schema_file << " already exists, skipping creation.";
-            return;
-        }
-
-        auto file = fopen(schema_file.c_str(), "w");
-        if (file == nullptr)
-        {
-            BOOST_LOG_TRIVIAL(error) << "Failed to create schema file at path: " << schema_file;
-            return;
-        }
-
-        for (auto &[column_name, data_type] : schema.columns)
-        {
-            fprintf(file, "%s,%d,%zu\n", column_name.c_str(), data_type.name, data_type.length);
-        }
-        fclose(file);
-        BOOST_LOG_TRIVIAL(debug) << "Created schema file at path: " << schema_file;
     }
 
     void TableManager::Delete(std::string_view database, std::string_view table)

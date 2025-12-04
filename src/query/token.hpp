@@ -24,8 +24,8 @@ namespace litedb
         bool IsKeywordNode();
         bool IsInvalidKeyword();
         bool IsIdentifier();
-        symbol_e GetType();
-        std::string GetValue();
+        symbol_e GetType() const;
+        std::string GetValue() const;
         void SetType(symbol_e symbol_t);
 
     protected:

@@ -1,8 +1,6 @@
 #ifndef __TABLE_MANAGER_HPP__
 #define __TABLE_MANAGER_HPP__
 
-#include "stg/table_schema.hpp"
-
 #include <filesystem>
 #include <string>
 #include <string_view>
@@ -18,7 +16,6 @@ namespace litedb
 
         std::vector<std::string> List(std::string_view database);
         void Create(std::string_view database, std::string_view table);
-        void CreateSchema(std::string_view database, std::string &table, TableSchema &schema);
         void Delete(std::string_view database, std::string_view table);
         bool Exists(std::string_view database, std::string_view table);
 

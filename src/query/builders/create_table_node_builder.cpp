@@ -21,7 +21,7 @@ namespace litedb
 
     CreateTableNodeBuilder &CreateTableNodeBuilder::AddColumn(std::string &column, data_type_t data_type)
     {
-        _node->schema.columns[column] = data_type;
+        _node->schema.AddColumn(column, data_type);
         return *this;
     }
 

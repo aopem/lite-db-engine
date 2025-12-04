@@ -41,12 +41,12 @@ namespace litedb
         return _symbol_t == symbol_e::IDENTIFIER;
     }
 
-    symbol_e Token::GetType()
+    symbol_e Token::GetType() const
     {
         return _symbol_t;
     }
 
-    std::string Token::GetValue()
+    std::string Token::GetValue() const
     {
         return _value;
     }

@@ -1,4 +1,5 @@
 #include "query_executor.hpp"
+#include "stg/row_validator.hpp"
 
 namespace litedb
 {
@@ -12,7 +13,7 @@ namespace litedb
     {
         BOOST_LOG_TRIVIAL(debug) << "Executing CREATE TABLE";
         _storage_engine.Tables().Create(_db_context.GetCurrentDatabase(), node->table);
-        _storage_engine.Tables().CreateSchema(
+        _storage_engine.Schemas().Write(
             _db_context.GetCurrentDatabase(),
             node->table,
             node->schema);
@@ -40,6 +41,23 @@ namespace litedb
             return;
         }
 
+        // Load schema for validation
+        auto schema = _storage_engine.Schemas().Read(database, node->table);
+        if (!schema.has_value())
+        {
+            BOOST_LOG_TRIVIAL(error) << "Table '" << node->table << "' does not exist or has no schema.";
+            return;
+        }
+
+        // Validate row against schema
+        RowValidator validator(schema.value());
+        auto validation = validator.Validate(node->columns, node->values);
+        if (!validation.success)
+        {
+            BOOST_LOG_TRIVIAL(error) << "Validation error: " << validation.error_message;
+            return;
+        }
+
         // Build data string from values
         std::string data = "";
         for (size_t i = 0; i < node->values.size(); i++)
@@ -53,6 +71,7 @@ namespace litedb
         data += "\n";
 
         _storage_engine.Data().Write(database, node->table, data);
+        BOOST_LOG_TRIVIAL(info) << "Inserted row '" << data << "' into table '" << node->table << "'";
     }
 
     void QueryExecutor::Visit(std::shared_ptr<SelectNode> node)
