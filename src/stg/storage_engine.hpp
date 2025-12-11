@@ -4,7 +4,6 @@
 #include "stg/db_manager.hpp"
 #include "stg/table_manager.hpp"
 #include "stg/table_schema_manager.hpp"
-#include "stg/data_manager.hpp"
 
 #include <filesystem>
 #include <memory>
@@ -21,7 +20,6 @@ namespace litedb
         DbManager &Databases() { return *_db_manager; }
         TableManager &Tables() { return *_table_manager; }
         TableSchemaManager &Schemas() { return *_table_schema_manager; }
-        DataManager &Data() { return *_data_manager; }
 
     private:
         static constexpr std::string_view _DEFAULT_STORAGE_DIR = "./.litedb/data/";
@@ -30,7 +28,6 @@ namespace litedb
         std::unique_ptr<DbManager> _db_manager;
         std::unique_ptr<TableManager> _table_manager;
         std::unique_ptr<TableSchemaManager> _table_schema_manager;
-        std::unique_ptr<DataManager> _data_manager;
     };
 };
 

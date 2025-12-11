@@ -58,20 +58,30 @@ namespace litedb
             return;
         }
 
-        // Build data string from values
-        std::string data = "";
+        // build data bytes from values
+        std::string data_str;
         for (size_t i = 0; i < node->values.size(); i++)
         {
-            data += node->values[i]->GetValue();
+            data_str += node->values[i]->GetValue();
             if (i < node->values.size() - 1)
             {
-                data += ",";
+                data_str += ",";
             }
         }
-        data += "\n";
 
-        _storage_engine.Data().Write(database, node->table, data);
-        BOOST_LOG_TRIVIAL(info) << "Inserted row '" << data << "' into table '" << node->table << "'";
+        // convert to bytes and insert via TableManager
+        auto data = std::vector<uint8_t>(data_str.begin(), data_str.end());
+        auto record_id = _storage_engine.Tables().Insert(database, node->table, data);
+
+        if (!record_id)
+        {
+            BOOST_LOG_TRIVIAL(error) << "Failed to insert row into table '" << node->table << "'";
+            return;
+        }
+
+        BOOST_LOG_TRIVIAL(info) << "Inserted row into table '" << node->table
+                                << "' at page " << record_id->page_id
+                                << ", record " << record_id->record_index;
     }
 
     void QueryExecutor::Visit(std::shared_ptr<SelectNode> node)
