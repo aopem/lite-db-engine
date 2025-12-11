@@ -42,3 +42,6 @@ build/
 
 # storage files
 .litedb/*
+
+# .github files
+.github/*
